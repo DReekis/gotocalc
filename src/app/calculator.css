@@ -1,0 +1,427 @@
+/* ─── Calculator Card ─── */
+.calc-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 2rem;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.calc-card:hover {
+    border-color: var(--primary);
+    box-shadow: 0 0 24px rgba(99, 102, 241, 0.08);
+}
+
+/* ─── Inputs ─── */
+.calc-input {
+    appearance: none;
+    background: var(--background);
+    border: 1.5px solid var(--border);
+    border-radius: 10px;
+    color: var(--foreground);
+    font-family: inherit;
+    font-size: 1rem;
+    min-height: 48px;
+    padding: 0.75rem 1rem;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    width: 100%;
+}
+
+.calc-input:focus {
+    border-color: var(--primary);
+    box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.15);
+    outline: none;
+}
+
+.calc-input::placeholder {
+    color: var(--muted);
+}
+
+.calc-select {
+    appearance: none;
+    background: var(--background) url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='none' stroke='%238b8fa8' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m2 4 4 4 4-4'/%3E%3C/svg%3E") no-repeat right 1rem center;
+    background-size: 12px;
+    border: 1.5px solid var(--border);
+    border-radius: 10px;
+    color: var(--foreground);
+    cursor: pointer;
+    font-family: inherit;
+    font-size: 1rem;
+    min-height: 48px;
+    padding: 0.75rem 2.5rem 0.75rem 1rem;
+    width: 100%;
+}
+
+.calc-select:focus {
+    border-color: var(--primary);
+    box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.15);
+    outline: none;
+}
+
+/* ─── Buttons ─── */
+.calc-btn {
+    align-items: center;
+    background: linear-gradient(135deg, var(--primary), var(--primary-light));
+    border: none;
+    border-radius: 12px;
+    color: #fff;
+    cursor: pointer;
+    display: inline-flex;
+    font-family: inherit;
+    font-size: 1rem;
+    font-weight: 600;
+    gap: 0.5rem;
+    justify-content: center;
+    min-height: 48px;
+    padding: 0.75rem 2rem;
+    transition: opacity 0.2s ease, transform 0.15s ease;
+}
+
+.calc-btn:hover {
+    opacity: 0.9;
+    transform: translateY(-1px);
+}
+
+.calc-btn:active {
+    transform: translateY(0);
+}
+
+.calc-btn-outline {
+    background: transparent;
+    border: 1.5px solid var(--border);
+    border-radius: 12px;
+    color: var(--foreground);
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    font-family: inherit;
+    font-size: 0.875rem;
+    font-weight: 500;
+    min-height: 48px;
+    padding: 0.75rem 1.5rem;
+    transition: border-color 0.2s ease, background 0.2s ease;
+}
+
+.calc-btn-outline:hover {
+    background: var(--surface-hover);
+    border-color: var(--primary);
+}
+
+/* ─── Results ─── */
+.calc-result {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 1.5rem;
+    margin-top: 1.5rem;
+    animation: fadeSlideIn 0.3s ease;
+}
+
+.calc-result-value {
+    color: var(--accent);
+    font-size: 2rem;
+    font-weight: 700;
+    line-height: 1.2;
+}
+
+@keyframes fadeSlideIn {
+    from {
+        opacity: 0;
+        transform: translateY(8px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* ─── Result Grid ─── */
+.result-grid {
+    display: grid;
+    gap: 1rem;
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+}
+
+.result-item {
+    background: var(--background);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 1rem;
+}
+
+.result-item-label {
+    color: var(--muted);
+    font-size: 0.8rem;
+    font-weight: 500;
+    letter-spacing: 0.025em;
+    margin-bottom: 0.25rem;
+    text-transform: uppercase;
+}
+
+.result-item-value {
+    color: var(--foreground);
+    font-size: 1.25rem;
+    font-weight: 700;
+}
+
+/* ─── Progress Bar ─── */
+.progress-bar {
+    background: var(--border);
+    border-radius: 999px;
+    height: 8px;
+    overflow: hidden;
+    width: 100%;
+}
+
+.progress-fill {
+    background: linear-gradient(90deg, var(--primary), var(--accent));
+    border-radius: 999px;
+    height: 100%;
+    transition: width 0.5s ease;
+}
+
+/* ─── Tab System ─── */
+.tab-list {
+    display: flex;
+    gap: 0.25rem;
+    background: var(--background);
+    border-radius: 12px;
+    padding: 4px;
+    margin-bottom: 1.5rem;
+    overflow-x: auto;
+}
+
+.tab-btn {
+    background: transparent;
+    border: none;
+    border-radius: 10px;
+    color: var(--muted);
+    cursor: pointer;
+    font-family: inherit;
+    font-size: 0.875rem;
+    font-weight: 500;
+    min-height: 40px;
+    padding: 0.5rem 1rem;
+    transition: all 0.2s ease;
+    white-space: nowrap;
+}
+
+.tab-btn:hover {
+    color: var(--foreground);
+}
+
+.tab-btn.active {
+    background: var(--primary);
+    color: #fff;
+    font-weight: 600;
+}
+
+/* ─── Breadcrumb ─── */
+.breadcrumb {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 0.25rem;
+    list-style: none;
+    margin: 0 0 1.5rem;
+    padding: 0;
+    font-size: 0.875rem;
+}
+
+.breadcrumb li {
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+    color: var(--muted);
+}
+
+.breadcrumb a {
+    color: var(--muted);
+    text-decoration: none;
+    transition: color 0.2s ease;
+}
+
+.breadcrumb a:hover {
+    color: var(--primary);
+}
+
+.breadcrumb .current {
+    color: var(--foreground);
+    font-weight: 500;
+}
+
+/* ─── Calculator Grid ─── */
+.calc-grid {
+    display: grid;
+    gap: 1.5rem;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+}
+
+/* ─── Content Sections ─── */
+.content-section {
+    margin-top: 3rem;
+    line-height: 1.8;
+}
+
+.content-section h2 {
+    color: var(--foreground);
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin: 2.5rem 0 1rem;
+}
+
+.content-section h3 {
+    color: var(--foreground);
+    font-size: 1.125rem;
+    font-weight: 600;
+    margin: 1.5rem 0 0.75rem;
+}
+
+.content-section p {
+    color: var(--muted);
+    margin: 0 0 1rem;
+}
+
+.content-section ul,
+.content-section ol {
+    color: var(--muted);
+    margin: 0 0 1rem;
+    padding-left: 1.5rem;
+}
+
+.content-section li {
+    margin-bottom: 0.5rem;
+}
+
+.formula-block {
+    background: var(--background);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    font-family: ui-monospace, "Cascadia Mono", "Segoe UI Mono", "Liberation Mono", Menlo, Monaco, Consolas, monospace;
+    font-size: 0.95rem;
+    line-height: 1.6;
+    margin: 1rem 0;
+    overflow-x: auto;
+    padding: 1.25rem 1.5rem;
+}
+
+/* ─── FAQ Accordion ─── */
+.faq-item {
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    margin-bottom: 0.75rem;
+    overflow: hidden;
+}
+
+.faq-item summary {
+    cursor: pointer;
+    font-weight: 600;
+    list-style: none;
+    padding: 1rem 1.25rem;
+    transition: background 0.2s ease;
+}
+
+.faq-item summary:hover {
+    background: var(--surface-hover);
+}
+
+.faq-item summary::-webkit-details-marker {
+    display: none;
+}
+
+.faq-item summary::before {
+    content: "+";
+    display: inline-block;
+    font-size: 1.25rem;
+    font-weight: 600;
+    margin-right: 0.75rem;
+    transition: transform 0.2s ease;
+    width: 1rem;
+}
+
+.faq-item[open] summary::before {
+    content: "−";
+}
+
+.faq-answer {
+    color: var(--muted);
+    line-height: 1.7;
+    padding: 0 1.25rem 1rem;
+}
+
+/* ─── Table ─── */
+.calc-table {
+    border-collapse: collapse;
+    width: 100%;
+    font-size: 0.875rem;
+}
+
+.calc-table th {
+    background: var(--surface);
+    border-bottom: 2px solid var(--border);
+    color: var(--foreground);
+    font-weight: 600;
+    padding: 0.75rem 1rem;
+    text-align: left;
+}
+
+.calc-table td {
+    border-bottom: 1px solid var(--border);
+    color: var(--muted);
+    padding: 0.75rem 1rem;
+}
+
+.calc-table tr:hover td {
+    background: var(--surface-hover);
+}
+
+/* ─── Comparison Cards ─── */
+.compare-grid {
+    display: grid;
+    gap: 1.5rem;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+}
+
+.compare-card {
+    background: var(--surface);
+    border: 1.5px solid var(--border);
+    border-radius: 14px;
+    padding: 1.5rem;
+    position: relative;
+    transition: border-color 0.2s ease;
+}
+
+.compare-card.recommended {
+    border-color: var(--success);
+}
+
+.compare-badge {
+    background: var(--success);
+    border-radius: 999px;
+    color: #fff;
+    font-size: 0.75rem;
+    font-weight: 600;
+    left: 50%;
+    padding: 0.25rem 0.75rem;
+    position: absolute;
+    top: -10px;
+    transform: translateX(-50%);
+}
+
+/* ─── Responsive ─── */
+@media (max-width: 640px) {
+    .calc-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .calc-card {
+        padding: 1.25rem;
+    }
+
+    .calc-result-value {
+        font-size: 1.5rem;
+    }
+}
