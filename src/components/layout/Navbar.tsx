@@ -4,11 +4,11 @@ export default function Navbar() {
     return (
         <nav
             style={{
-                background: "var(--surface)",
                 borderBottom: "1px solid var(--border)",
                 position: "sticky",
                 top: 0,
                 zIndex: 50,
+                background: "var(--bg)",
             }}
         >
             <div
@@ -17,84 +17,48 @@ export default function Navbar() {
                     display: "flex",
                     justifyContent: "space-between",
                     margin: "0 auto",
-                    maxWidth: 1200,
-                    padding: "0.75rem 1.5rem",
+                    maxWidth: 960,
+                    padding: "0.75rem 1rem",
                 }}
             >
-                {/* Logo */}
                 <Link
                     href="/"
                     style={{
-                        alignItems: "center",
-                        color: "var(--foreground)",
-                        display: "flex",
-                        fontWeight: 700,
-                        fontSize: "1.25rem",
-                        gap: "0.5rem",
-                        textDecoration: "none",
+                        color: "var(--fg)",
+                        fontWeight: 800,
+                        fontSize: "1.125rem",
+                        letterSpacing: "-0.02em",
                     }}
                 >
-                    <svg
-                        width="28"
-                        height="28"
-                        viewBox="0 0 28 28"
-                        fill="none"
-                        aria-hidden="true"
-                    >
-                        <rect
-                            width="28"
-                            height="28"
-                            rx="7"
-                            fill="url(#logo-grad)"
-                        />
-                        <path
-                            d="M8 9h12M8 14h12M8 19h8"
-                            stroke="#fff"
-                            strokeWidth="2"
-                            strokeLinecap="round"
-                        />
-                        <defs>
-                            <linearGradient
-                                id="logo-grad"
-                                x1="0"
-                                y1="0"
-                                x2="28"
-                                y2="28"
-                            >
-                                <stop stopColor="#6366f1" />
-                                <stop offset="1" stopColor="#22d3ee" />
-                            </linearGradient>
-                        </defs>
-                    </svg>
-                    GoToCalc
+                    GoToCalc<span style={{ color: "var(--muted)" }}>.</span>
                 </Link>
 
-                {/* Nav links */}
                 <div
                     style={{
                         alignItems: "center",
                         display: "flex",
-                        gap: "1.5rem",
-                        fontSize: "0.9rem",
+                        gap: "1.25rem",
+                        fontSize: "0.85rem",
+                        fontWeight: 500,
+                        overflowX: "auto",
+                        whiteSpace: "nowrap",
+                        WebkitOverflowScrolling: "touch",
+                        scrollbarWidth: "none", // Firefox
+                        msOverflowStyle: "none", // IE
                     }}
                 >
-                    <Link
-                        href="/finance/sip-calculator"
-                        style={{ color: "var(--muted)", textDecoration: "none" }}
-                    >
+                    <style dangerouslySetInnerHTML={{ __html: `::-webkit-scrollbar { display: none; }` }} />
+                    <Link href="/finance/sip-calculator" style={{ color: "var(--muted)" }}>
                         Finance
                     </Link>
-                    <Link
-                        href="/health/bmi-calculator"
-                        style={{ color: "var(--muted)", textDecoration: "none" }}
-                    >
+                    <Link href="/health/bmi-calculator" style={{ color: "var(--muted)" }}>
                         Health
                     </Link>
-                    <Link
-                        href="/math/percentage-calculator"
-                        style={{ color: "var(--muted)", textDecoration: "none" }}
-                    >
+                    <Link href="/math/percentage-calculator" style={{ color: "var(--muted)" }}>
                         Math
+                    </Link>
+                    <Link href="/education/cgpa-to-percentage-calculator" style={{ color: "var(--muted)" }}>
+                        Education
                     </Link>
                 </div>
             </div>

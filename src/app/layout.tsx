@@ -3,7 +3,6 @@ import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
 import { SITE_URL, SITE_NAME, SITE_DESCRIPTION } from "@/lib/constants";
 import "./globals.css";
-import "./calculator.css";
 
 export const metadata: Metadata = {
   title: {
@@ -26,6 +25,10 @@ export const metadata: Metadata = {
     title: `${SITE_NAME} — Free Online Calculators`,
     description: SITE_DESCRIPTION,
   },
+  other: {
+    "mobile-web-app-capable": "yes",
+    "apple-mobile-web-app-capable": "yes",
+  },
 };
 
 export default function RootLayout({
@@ -36,6 +39,16 @@ export default function RootLayout({
   return (
     <html lang="en">
       <head>
+        <meta
+          name="theme-color"
+          content="#0a0a0a"
+          media="(prefers-color-scheme: dark)"
+        />
+        <meta
+          name="theme-color"
+          content="#fafaf9"
+          media="(prefers-color-scheme: light)"
+        />
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{
@@ -54,7 +67,7 @@ export default function RootLayout({
           }}
         />
       </head>
-      <body className="font-sans antialiased">
+      <body>
         <Navbar />
         {children}
         <Footer />

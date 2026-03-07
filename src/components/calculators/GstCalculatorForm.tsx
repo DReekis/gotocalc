@@ -1,29 +1,20 @@
 "use client";
 
-import { useState } from "react";
-import { calculateGST, type GSTResult } from "@/lib/formulas";
+import { useState, useMemo } from "react";
+import { calculateGST } from "@/lib/formulas";
 import { GST_RATES } from "@/lib/constants";
 
 export default function GstCalculatorForm() {
-    const [amount, setAmount] = useState("");
+    const [amount, setAmount] = useState("10000");
     const [rate, setRate] = useState<number>(18);
     const [mode, setMode] = useState<"exclusive" | "inclusive">("exclusive");
     const [isInterState, setIsInterState] = useState(false);
-    const [result, setResult] = useState<GSTResult | null>(null);
 
-    function handleCalculate() {
+    const result = useMemo(() => {
         const a = parseFloat(amount);
-        if (isNaN(a) || a <= 0) return;
-        setResult(calculateGST(a, rate, mode, isInterState));
-    }
-
-    function handleReset() {
-        setAmount("");
-        setRate(18);
-        setMode("exclusive");
-        setIsInterState(false);
-        setResult(null);
-    }
+        if (isNaN(a) || a <= 0) return null;
+        return calculateGST(a, rate, mode, isInterState);
+    }, [amount, rate, mode, isInterState]);
 
     const fmt = (n: number) =>
         new Intl.NumberFormat("en-IN", { style: "currency", currency: "INR" }).format(n);
@@ -33,35 +24,38 @@ export default function GstCalculatorForm() {
             <div style={{ display: "grid", gap: "1rem" }}>
                 <div>
                     <label style={{ color: "var(--muted)", display: "block", fontSize: "0.85rem", fontWeight: 500, marginBottom: "0.4rem" }}>
-                        Amount (₹)
+                        Amount
                     </label>
-                    <input
-                        type="number"
-                        className="calc-input"
-                        placeholder="e.g. 10000"
-                        value={amount}
-                        onChange={(e) => setAmount(e.target.value)}
-                        min="0"
-                        id="gst-amount"
-                    />
+                    <div className="input-wrapper">
+                        <input
+                            type="text"
+                            inputMode="decimal"
+                            className="calc-input"
+                            placeholder="10000"
+                            value={amount}
+                            onChange={(e) => setAmount(e.target.value.replace(/[^0-9.]/g, ""))}
+                            id="gst-amount"
+                        />
+                        <span className="input-icon">₹</span>
+                    </div>
                 </div>
 
                 <div>
                     <label style={{ color: "var(--muted)", display: "block", fontSize: "0.85rem", fontWeight: 500, marginBottom: "0.4rem" }}>
                         GST Rate
                     </label>
-                    <select
-                        className="calc-select"
-                        value={rate}
-                        onChange={(e) => setRate(Number(e.target.value))}
-                        id="gst-rate"
-                    >
+                    <div className="chip-group">
                         {GST_RATES.map((r) => (
-                            <option key={r} value={r}>
+                            <button
+                                key={r}
+                                type="button"
+                                className={`chip ${rate === r ? "active" : ""}`}
+                                onClick={() => setRate(r)}
+                            >
                                 {r}%
-                            </option>
+                            </button>
                         ))}
-                    </select>
+                    </div>
                 </div>
 
                 <div>
@@ -92,21 +86,12 @@ export default function GstCalculatorForm() {
                             type="checkbox"
                             checked={isInterState}
                             onChange={(e) => setIsInterState(e.target.checked)}
-                            style={{ width: 18, height: 18, accentColor: "var(--primary)" }}
+                            style={{ width: 20, height: 20, accentColor: "var(--primary)" }}
                             id="gst-interstate"
                         />
                         Inter-State Supply (IGST)
                     </label>
                 </div>
-            </div>
-
-            <div style={{ display: "flex", gap: "0.75rem", marginTop: "1.25rem" }}>
-                <button className="calc-btn" onClick={handleCalculate} id="gst-calculate">
-                    Calculate GST
-                </button>
-                <button className="calc-btn-outline" onClick={handleReset}>
-                    Reset
-                </button>
             </div>
 
             {result && (
@@ -130,7 +115,6 @@ export default function GstCalculatorForm() {
                         </div>
                     </div>
 
-                    {/* Tax breakdown */}
                     <div style={{ marginTop: "1.25rem", background: "var(--background)", borderRadius: 10, padding: "1rem" }}>
                         <p style={{ color: "var(--foreground)", fontSize: "0.85rem", fontWeight: 600, margin: "0 0 0.75rem" }}>
                             Tax Breakdown

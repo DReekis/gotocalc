@@ -11,7 +11,7 @@ export interface CalculatorMeta {
   slug: string;
   title: string;
   description: string;
-  category: "finance" | "health" | "math";
+  category: "finance" | "health" | "math" | "education";
   categoryLabel: string;
   applicationCategory: string;
   faqs: FAQItem[];
@@ -146,6 +146,11 @@ export const CALCULATORS: CalculatorMeta[] = [
         answer:
           "BMI can overestimate body fat in athletes or muscular individuals because it does not differentiate between lean muscle mass and fat. If you have a high BMI but are highly active, consider complementary measures like body fat percentage or waist-to-hip ratio.",
       },
+      {
+        question: "What is a healthy BMI for my age?",
+        answer:
+          "For adults (18+), a healthy BMI is generally between 18.5 and 24.9 regardless of age. However, older adults may be advised to maintain a slightly higher BMI (25-27) to protect against bone density loss and illness reserve. Always consult a healthcare provider for personalized advice.",
+      },
     ],
   },
   {
@@ -197,6 +202,58 @@ export const CALCULATORS: CalculatorMeta[] = [
         question: "What is the difference between percentage and percentile?",
         answer:
           "Percentage is a fraction of 100 (e.g., 85% means 85 out of 100). Percentile indicates the position of a value relative to a dataset — the 90th percentile means you scored better than 90% of all values. They measure different things.",
+      },
+    ],
+  },
+  {
+    slug: "education/cgpa-to-percentage-calculator",
+    title: "CGPA to Percentage Calculator",
+    description:
+      "Convert CGPA to percentage instantly using exact university formulas for CBSE, VTU, AKTU, and Mumbai University. Compare results across all boards.",
+    category: "education",
+    categoryLabel: "Education",
+    applicationCategory: "EducationalApplication",
+    faqs: [
+      {
+        question: "How do I convert CGPA to percentage for CBSE?",
+        answer:
+          "For CBSE and most Indian boards, multiply your CGPA by 9.5. For example, a CGPA of 8.2 equals 8.2 × 9.5 = 77.9%. This is the standard conversion recommended by CBSE.",
+      },
+      {
+        question: "Why do different universities use different formulas?",
+        answer:
+          "Each university calibrates its grading system differently. VTU uses (CGPA − 0.75) × 10, AKTU uses (CGPA × 10) − 7.5, and Mumbai University uses 7.25 × CGPA + 11. These formulas account for differences in how internal grades are weighted.",
+      },
+      {
+        question: "Can I use CGPA to percentage conversion for job applications?",
+        answer:
+          "Yes, many recruiters accept the standard CBSE formula (CGPA × 9.5) as a reasonable conversion. However, if your university provides an official conversion formula, always use that one for formal applications.",
+      },
+    ],
+  },
+  {
+    slug: "math/scientific-calculator",
+    title: "Scientific Calculator",
+    description:
+      "Free online scientific calculator with trigonometric functions, logarithms, square roots, exponents, and factorial. Keyboard & touch-friendly.",
+    category: "math",
+    categoryLabel: "Math",
+    applicationCategory: "UtilitiesApplication",
+    faqs: [
+      {
+        question: "What functions does this scientific calculator support?",
+        answer:
+          "This calculator supports trigonometric functions (sin, cos, tan in degrees), logarithms (log base 10 and natural log ln), square root (√), power/exponent (xʸ), factorial (!), percentage (%), and constants π and e.",
+      },
+      {
+        question: "Does this calculator use degrees or radians?",
+        answer:
+          "Trigonometric functions (sin, cos, tan) use degrees by default, which is the standard for most academic use. For example, sin(90) = 1.",
+      },
+      {
+        question: "Can I chain operations together?",
+        answer:
+          "Yes, you can build complex expressions using parentheses and chain multiple operations. After pressing =, typing a number starts a new calculation, while typing an operator continues from the result.",
       },
     ],
   },

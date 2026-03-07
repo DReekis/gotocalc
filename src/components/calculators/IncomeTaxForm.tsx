@@ -1,165 +1,108 @@
 "use client";
 
-import { useState } from "react";
-import { calculateIncomeTax, type TaxResult } from "@/lib/formulas";
-import { OLD_REGIME_SLABS, NEW_REGIME_SLABS } from "@/lib/constants";
+import { useState, useMemo } from "react";
+import { calculateIncomeTax } from "@/lib/formulas";
 
 export default function IncomeTaxForm() {
-    const [income, setIncome] = useState("");
-    const [result, setResult] = useState<{ old: TaxResult; new: TaxResult } | null>(null);
+    const [income, setIncome] = useState("1000000");
 
-    function handleCalculate() {
-        const val = parseFloat(income);
-        if (isNaN(val) || val <= 0) return;
-        setResult({
-            old: calculateIncomeTax(val, "old"),
-            new: calculateIncomeTax(val, "new"),
-        });
-    }
+    const oldResult = useMemo(() => {
+        const i = parseFloat(income);
+        if (isNaN(i) || i <= 0) return null;
+        return calculateIncomeTax(i, "old");
+    }, [income]);
 
-    function handleReset() {
-        setIncome("");
-        setResult(null);
-    }
+    const newResult = useMemo(() => {
+        const i = parseFloat(income);
+        if (isNaN(i) || i <= 0) return null;
+        return calculateIncomeTax(i, "new");
+    }, [income]);
 
     const fmt = (n: number) =>
         new Intl.NumberFormat("en-IN", { style: "currency", currency: "INR", maximumFractionDigits: 0 }).format(n);
 
-    const betterRegime = result
-        ? result.old.totalTax <= result.new.totalTax ? "old" : "new"
+    const betterRegime = oldResult && newResult
+        ? oldResult.totalTax <= newResult.totalTax ? "old" : "new"
         : null;
 
     return (
         <div>
             <div>
                 <label style={{ color: "var(--muted)", display: "block", fontSize: "0.85rem", fontWeight: 500, marginBottom: "0.4rem" }}>
-                    Annual Gross Income (₹)
+                    Gross Annual Income
                 </label>
-                <input
-                    type="number"
-                    className="calc-input"
-                    placeholder="e.g. 1200000"
-                    value={income}
-                    onChange={(e) => setIncome(e.target.value)}
-                    min="0"
-                    id="tax-income"
-                />
-                <p style={{ color: "var(--muted)", fontSize: "0.8rem", margin: "0.5rem 0 0" }}>
-                    Enter your total income before any deductions. We apply standard deduction automatically.
-                </p>
+                <div className="input-wrapper">
+                    <input
+                        type="text"
+                        inputMode="decimal"
+                        className="calc-input"
+                        placeholder="1000000"
+                        value={income}
+                        onChange={(e) => setIncome(e.target.value.replace(/[^0-9.]/g, ""))}
+                        id="tax-income"
+                    />
+                    <span className="input-icon">₹</span>
+                </div>
             </div>
 
-            <div style={{ display: "flex", gap: "0.75rem", marginTop: "1.25rem" }}>
-                <button className="calc-btn" onClick={handleCalculate} id="tax-calculate">
-                    Compare Tax Regimes
-                </button>
-                <button className="calc-btn-outline" onClick={handleReset}>
-                    Reset
-                </button>
-            </div>
-
-            {result && (
+            {oldResult && newResult && (
                 <div style={{ marginTop: "1.5rem" }}>
                     <div className="compare-grid">
-                        {/* Old Regime */}
                         <div className={`compare-card ${betterRegime === "old" ? "recommended" : ""}`}>
-                            {betterRegime === "old" && (
-                                <span className="compare-badge">💰 Saves More</span>
-                            )}
-                            <h3 style={{ fontSize: "1rem", fontWeight: 700, margin: "0 0 1rem", color: "var(--foreground)" }}>
-                                Old Tax Regime
-                            </h3>
+                            {betterRegime === "old" && <span className="compare-badge">Better</span>}
+                            <h4 style={{ margin: "0 0 1rem", fontSize: "1rem", fontWeight: 600 }}>Old Regime</h4>
                             <div style={{ display: "grid", gap: "0.75rem" }}>
-                                <div>
-                                    <span style={{ color: "var(--muted)", fontSize: "0.8rem" }}>Taxable Income</span>
-                                    <p style={{ color: "var(--foreground)", fontSize: "1.1rem", fontWeight: 600, margin: "0.15rem 0 0" }}>
-                                        {fmt(result.old.taxableIncome)}
-                                    </p>
+                                <div className="result-item">
+                                    <div className="result-item-label">Taxable Income</div>
+                                    <div className="result-item-value" style={{ fontSize: "1.1rem" }}>{fmt(oldResult.taxableIncome)}</div>
                                 </div>
-                                <div>
-                                    <span style={{ color: "var(--muted)", fontSize: "0.8rem" }}>Tax Before Cess</span>
-                                    <p style={{ color: "var(--foreground)", fontSize: "1.1rem", fontWeight: 600, margin: "0.15rem 0 0" }}>
-                                        {fmt(result.old.taxBeforeCess)}
-                                    </p>
+                                <div className="result-item">
+                                    <div className="result-item-label">Tax</div>
+                                    <div className="result-item-value" style={{ fontSize: "1.1rem" }}>{fmt(oldResult.taxBeforeCess)}</div>
                                 </div>
-                                <div>
-                                    <span style={{ color: "var(--muted)", fontSize: "0.8rem" }}>Health &amp; Education Cess (4%)</span>
-                                    <p style={{ color: "var(--foreground)", fontSize: "1.1rem", fontWeight: 600, margin: "0.15rem 0 0" }}>
-                                        {fmt(result.old.cess)}
-                                    </p>
+                                <div className="result-item">
+                                    <div className="result-item-label">Cess (4%)</div>
+                                    <div className="result-item-value" style={{ fontSize: "1.1rem" }}>{fmt(oldResult.cess)}</div>
                                 </div>
-                                <div style={{ borderTop: "1px solid var(--border)", paddingTop: "0.75rem" }}>
-                                    <span style={{ color: "var(--muted)", fontSize: "0.8rem" }}>Total Tax Payable</span>
-                                    <p className="calc-result-value" style={{ fontSize: "1.5rem", margin: "0.15rem 0 0" }}>
-                                        {fmt(result.old.totalTax)}
-                                    </p>
-                                    <span style={{ color: "var(--muted)", fontSize: "0.8rem" }}>
-                                        Effective Rate: {result.old.effectiveRate}%
-                                    </span>
+                                <div className="result-item" style={{ borderColor: "var(--primary)" }}>
+                                    <div className="result-item-label">Total Tax Payable</div>
+                                    <div className="result-item-value" style={{ fontSize: "1.25rem", color: "var(--accent)" }}>{fmt(oldResult.totalTax)}</div>
+                                </div>
+                                <div style={{ fontSize: "0.8rem", color: "var(--muted)" }}>
+                                    Effective Rate: {oldResult.effectiveRate}%
                                 </div>
                             </div>
                         </div>
-
-                        {/* New Regime */}
                         <div className={`compare-card ${betterRegime === "new" ? "recommended" : ""}`}>
-                            {betterRegime === "new" && (
-                                <span className="compare-badge">💰 Saves More</span>
-                            )}
-                            <h3 style={{ fontSize: "1rem", fontWeight: 700, margin: "0 0 1rem", color: "var(--foreground)" }}>
-                                New Tax Regime
-                            </h3>
+                            {betterRegime === "new" && <span className="compare-badge">Better</span>}
+                            <h4 style={{ margin: "0 0 1rem", fontSize: "1rem", fontWeight: 600 }}>New Regime</h4>
                             <div style={{ display: "grid", gap: "0.75rem" }}>
-                                <div>
-                                    <span style={{ color: "var(--muted)", fontSize: "0.8rem" }}>Taxable Income</span>
-                                    <p style={{ color: "var(--foreground)", fontSize: "1.1rem", fontWeight: 600, margin: "0.15rem 0 0" }}>
-                                        {fmt(result.new.taxableIncome)}
-                                    </p>
+                                <div className="result-item">
+                                    <div className="result-item-label">Taxable Income</div>
+                                    <div className="result-item-value" style={{ fontSize: "1.1rem" }}>{fmt(newResult.taxableIncome)}</div>
                                 </div>
-                                <div>
-                                    <span style={{ color: "var(--muted)", fontSize: "0.8rem" }}>Tax Before Cess</span>
-                                    <p style={{ color: "var(--foreground)", fontSize: "1.1rem", fontWeight: 600, margin: "0.15rem 0 0" }}>
-                                        {fmt(result.new.taxBeforeCess)}
-                                    </p>
+                                <div className="result-item">
+                                    <div className="result-item-label">Tax</div>
+                                    <div className="result-item-value" style={{ fontSize: "1.1rem" }}>{fmt(newResult.taxBeforeCess)}</div>
                                 </div>
-                                <div>
-                                    <span style={{ color: "var(--muted)", fontSize: "0.8rem" }}>Health &amp; Education Cess (4%)</span>
-                                    <p style={{ color: "var(--foreground)", fontSize: "1.1rem", fontWeight: 600, margin: "0.15rem 0 0" }}>
-                                        {fmt(result.new.cess)}
-                                    </p>
+                                <div className="result-item">
+                                    <div className="result-item-label">Cess (4%)</div>
+                                    <div className="result-item-value" style={{ fontSize: "1.1rem" }}>{fmt(newResult.cess)}</div>
                                 </div>
-                                <div style={{ borderTop: "1px solid var(--border)", paddingTop: "0.75rem" }}>
-                                    <span style={{ color: "var(--muted)", fontSize: "0.8rem" }}>Total Tax Payable</span>
-                                    <p className="calc-result-value" style={{ fontSize: "1.5rem", margin: "0.15rem 0 0" }}>
-                                        {fmt(result.new.totalTax)}
-                                    </p>
-                                    <span style={{ color: "var(--muted)", fontSize: "0.8rem" }}>
-                                        Effective Rate: {result.new.effectiveRate}%
-                                    </span>
+                                <div className="result-item" style={{ borderColor: "var(--primary)" }}>
+                                    <div className="result-item-label">Total Tax Payable</div>
+                                    <div className="result-item-value" style={{ fontSize: "1.25rem", color: "var(--accent)" }}>{fmt(newResult.totalTax)}</div>
+                                </div>
+                                <div style={{ fontSize: "0.8rem", color: "var(--muted)" }}>
+                                    Effective Rate: {newResult.effectiveRate}%
                                 </div>
                             </div>
                         </div>
                     </div>
-
-                    {/* Savings summary */}
-                    {result.old.totalTax !== result.new.totalTax && (
-                        <div
-                            style={{
-                                background: "var(--surface)",
-                                border: "1px solid var(--success)",
-                                borderRadius: 12,
-                                marginTop: "1.25rem",
-                                padding: "1rem 1.25rem",
-                                textAlign: "center",
-                            }}
-                        >
-                            <p style={{ color: "var(--success)", fontSize: "0.95rem", fontWeight: 600, margin: 0 }}>
-                                You save{" "}
-                                <strong>
-                                    {fmt(Math.abs(result.old.totalTax - result.new.totalTax))}
-                                </strong>{" "}
-                                with the {betterRegime === "old" ? "Old" : "New"} Tax Regime
-                            </p>
-                        </div>
+                    {betterRegime && (
+                        <p style={{ marginTop: "1rem", fontSize: "0.9rem", color: "var(--success)", textAlign: "center" }}>
+                            You save {fmt(Math.abs(oldResult.totalTax - newResult.totalTax))} with the {betterRegime === "old" ? "Old" : "New"} Regime
+                        </p>
                     )}
                 </div>
             )}

@@ -1,5 +1,6 @@
 import Link from "next/link";
-import { SITE_URL, type FAQItem } from "@/lib/constants";
+import "@/app/calculator.css";
+import { type FAQItem } from "@/lib/constants";
 
 interface BreadcrumbItem {
     label: string;
@@ -34,12 +35,12 @@ export default function CalculatorShell({
     faqs,
 }: Props) {
     return (
-        <main style={{ margin: "0 auto", maxWidth: 800, padding: "2rem 1.5rem" }}>
+        <main style={{ margin: "0 auto", maxWidth: 720, padding: "1.5rem 1rem 3rem" }}>
             {/* Breadcrumbs */}
             <nav aria-label="Breadcrumb">
                 <ol className="breadcrumb">
                     {breadcrumbs.map((crumb, i) => (
-                        <li key={crumb.href}>
+                        <li key={i}>
                             {i < breadcrumbs.length - 1 ? (
                                 <>
                                     <Link href={crumb.href}>{crumb.label}</Link>
@@ -54,13 +55,14 @@ export default function CalculatorShell({
             </nav>
 
             {/* Hero */}
-            <header style={{ marginBottom: "2rem" }}>
+            <header style={{ marginBottom: "1.5rem" }}>
                 <h1
                     style={{
-                        fontSize: "clamp(1.75rem, 4vw, 2.5rem)",
+                        fontSize: "clamp(1.5rem, 4vw, 2rem)",
                         fontWeight: 800,
+                        letterSpacing: "-0.02em",
                         lineHeight: 1.15,
-                        margin: "0 0 0.5rem",
+                        margin: "0 0 0.375rem",
                     }}
                 >
                     {title}
@@ -68,8 +70,8 @@ export default function CalculatorShell({
                 <p
                     style={{
                         color: "var(--muted)",
-                        fontSize: "1.05rem",
-                        lineHeight: 1.6,
+                        fontSize: "0.925rem",
+                        lineHeight: 1.5,
                         margin: 0,
                     }}
                 >
@@ -82,7 +84,6 @@ export default function CalculatorShell({
 
             {/* E-E-A-T Content Sections */}
             <article className="content-section">
-                {/* Definition */}
                 {definitionTitle && definitionContent && (
                     <section>
                         <h2>{definitionTitle}</h2>
@@ -90,7 +91,6 @@ export default function CalculatorShell({
                     </section>
                 )}
 
-                {/* Formula */}
                 {formulaTitle && formulaContent && (
                     <section>
                         <h2>{formulaTitle}</h2>
@@ -98,7 +98,6 @@ export default function CalculatorShell({
                     </section>
                 )}
 
-                {/* Example */}
                 {exampleTitle && exampleContent && (
                     <section>
                         <h2>{exampleTitle}</h2>
@@ -106,10 +105,9 @@ export default function CalculatorShell({
                     </section>
                 )}
 
-                {/* FAQ */}
                 {faqs && faqs.length > 0 && (
                     <section>
-                        <h2>Frequently Asked Questions</h2>
+                        <h2>People Also Ask</h2>
                         {faqs.map((faq, i) => (
                             <details key={i} className="faq-item">
                                 <summary>{faq.question}</summary>

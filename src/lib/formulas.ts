@@ -4,35 +4,52 @@
 
 import { OLD_REGIME_SLABS, NEW_REGIME_SLABS } from "./constants";
 
-/* ─── SIP (Future Value of Annuity) ─── */
+/* ─── SIP (Step-Up & Inflation-Adjusted) ─── */
 
 export interface SIPResult {
     investedAmount: number;
     estimatedReturns: number;
     totalValue: number;
+    inflationAdjustedValue: number | null;
 }
 
 export function calculateSIP(
     monthlyInvestment: number,
     annualReturnRate: number,
-    years: number
+    years: number,
+    stepUpPercent: number = 0,
+    inflationRate: number | null = null
 ): SIPResult {
-    const n = years * 12;
     const r = annualReturnRate / 12 / 100;
-    const investedAmount = monthlyInvestment * n;
+    let totalInvested = 0;
+    let totalValue = 0;
+    let currentMonthly = monthlyInvestment;
 
-    if (r === 0) {
-        return { investedAmount, estimatedReturns: 0, totalValue: investedAmount };
+    for (let year = 1; year <= years; year++) {
+        for (let month = 1; month <= 12; month++) {
+            totalInvested += currentMonthly;
+            const remainingMonths = (years - year) * 12 + (12 - month);
+            if (r === 0) {
+                totalValue += currentMonthly;
+            } else {
+                totalValue += currentMonthly * Math.pow(1 + r, remainingMonths + 1);
+            }
+        }
+        if (year < years) {
+            currentMonthly = currentMonthly * (1 + stepUpPercent / 100);
+        }
     }
 
-    const totalValue = monthlyInvestment * (((Math.pow(1 + r, n) - 1) / r) * (1 + r));
-    const estimatedReturns = totalValue - investedAmount;
+    const investedAmount = Math.round(totalInvested);
+    const tv = Math.round(totalValue);
+    const estimatedReturns = tv - investedAmount;
 
-    return {
-        investedAmount: Math.round(investedAmount),
-        estimatedReturns: Math.round(estimatedReturns),
-        totalValue: Math.round(totalValue),
-    };
+    let inflationAdjustedValue: number | null = null;
+    if (inflationRate !== null && inflationRate > 0) {
+        inflationAdjustedValue = Math.round(tv / Math.pow(1 + inflationRate / 100, years));
+    }
+
+    return { investedAmount, estimatedReturns, totalValue: tv, inflationAdjustedValue };
 }
 
 /* ─── GST ─── */
@@ -104,21 +121,13 @@ export function calculateIncomeTax(
     regime: "old" | "new"
 ): TaxResult {
     const slabs = regime === "old" ? OLD_REGIME_SLABS : NEW_REGIME_SLABS;
-
-    // Standard deduction for new regime (₹75,000 from Budget 2024)
     const standardDeduction = regime === "new" ? 75000 : 50000;
     const taxableIncome = Math.max(0, grossIncome - standardDeduction);
 
     let taxBeforeCess = computeSlabTax(taxableIncome, slabs);
 
-    // New regime rebate u/s 87A: No tax up to ₹7L taxable income
-    if (regime === "new" && taxableIncome <= 700000) {
-        taxBeforeCess = 0;
-    }
-    // Old regime rebate u/s 87A: No tax up to ₹5L taxable income
-    if (regime === "old" && taxableIncome <= 500000) {
-        taxBeforeCess = 0;
-    }
+    if (regime === "new" && taxableIncome <= 700000) taxBeforeCess = 0;
+    if (regime === "old" && taxableIncome <= 500000) taxBeforeCess = 0;
 
     const cess = Math.round(taxBeforeCess * 0.04 * 100) / 100;
     const totalTax = Math.round((taxBeforeCess + cess) * 100) / 100;
@@ -134,7 +143,7 @@ export function calculateIncomeTax(
     };
 }
 
-/* ─── BMI ─── */
+/* ─── BMI + Waist-to-Height Ratio ─── */
 
 export interface BMIResult {
     bmi: number;
@@ -151,19 +160,48 @@ export function calculateBMI(weightKg: number, heightCm: number): BMIResult {
 
     if (bmi < 18.5) {
         category = "Underweight";
-        categoryColor = "#60a5fa"; // blue
+        categoryColor = "#60a5fa";
     } else if (bmi < 25) {
         category = "Normal weight";
-        categoryColor = "#34d399"; // green
+        categoryColor = "#34d399";
     } else if (bmi < 30) {
         category = "Overweight";
-        categoryColor = "#fbbf24"; // yellow
+        categoryColor = "#fbbf24";
     } else {
         category = "Obese";
-        categoryColor = "#f87171"; // red
+        categoryColor = "#f87171";
     }
 
     return { bmi, category, categoryColor };
+}
+
+export interface WtHRResult {
+    ratio: number;
+    category: string;
+    categoryColor: string;
+}
+
+export function calculateWtHR(waistCm: number, heightCm: number): WtHRResult {
+    const ratio = Math.round((waistCm / heightCm) * 1000) / 1000;
+
+    let category: string;
+    let categoryColor: string;
+
+    if (ratio < 0.4) {
+        category = "Underweight";
+        categoryColor = "#60a5fa";
+    } else if (ratio <= 0.5) {
+        category = "Healthy";
+        categoryColor = "#34d399";
+    } else if (ratio <= 0.6) {
+        category = "Increased Risk";
+        categoryColor = "#fbbf24";
+    } else {
+        category = "High Risk";
+        categoryColor = "#f87171";
+    }
+
+    return { ratio, category, categoryColor };
 }
 
 /* ─── Age ─── */
@@ -198,7 +236,6 @@ export function calculateAge(
     const diffTime = Math.abs(targetDate.getTime() - birthDate.getTime());
     const totalDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
 
-    // Next birthday
     const nextBirthday = new Date(
         targetDate.getFullYear(),
         birthDate.getMonth(),
@@ -230,13 +267,22 @@ export function percentChange(oldVal: number, newVal: number): number {
     return Math.round(((newVal - oldVal) / Math.abs(oldVal)) * 10000) / 100;
 }
 
-/* ─── Mortgage (Amortization) ─── */
+/* ─── Mortgage (Full Cost + Full Amortization) ─── */
+
+export interface MortgageExtras {
+    annualTax: number;
+    annualInsurance: number;
+    monthlyPMI: number;
+    monthlyHOA: number;
+}
 
 export interface MortgageResult {
+    monthlyPI: number;
     monthlyPayment: number;
     totalPayment: number;
     totalInterest: number;
     loanAmount: number;
+    extras: { tax: number; insurance: number; pmi: number; hoa: number };
     schedule: AmortizationRow[];
 }
 
@@ -252,36 +298,70 @@ export function calculateMortgage(
     homePrice: number,
     downPaymentPercent: number,
     annualRate: number,
-    termYears: number
+    termYears: number,
+    extras?: MortgageExtras
 ): MortgageResult {
     const downPayment = (homePrice * downPaymentPercent) / 100;
     const loanAmount = homePrice - downPayment;
     const r = annualRate / 12 / 100;
     const n = termYears * 12;
 
-    let monthlyPayment: number;
-
+    let monthlyPI: number;
     if (r === 0) {
-        monthlyPayment = loanAmount / n;
+        monthlyPI = loanAmount / n;
     } else {
-        monthlyPayment =
-            (loanAmount * (r * Math.pow(1 + r, n))) / (Math.pow(1 + r, n) - 1);
+        monthlyPI = (loanAmount * (r * Math.pow(1 + r, n))) / (Math.pow(1 + r, n) - 1);
     }
+    monthlyPI = Math.round(monthlyPI * 100) / 100;
 
-    monthlyPayment = Math.round(monthlyPayment * 100) / 100;
+    const tax = extras ? Math.round((extras.annualTax / 12) * 100) / 100 : 0;
+    const insurance = extras ? Math.round((extras.annualInsurance / 12) * 100) / 100 : 0;
+    const pmi = extras?.monthlyPMI ?? 0;
+    const hoa = extras?.monthlyHOA ?? 0;
+    const monthlyPayment = Math.round((monthlyPI + tax + insurance + pmi + hoa) * 100) / 100;
 
     const schedule: AmortizationRow[] = [];
     let balance = loanAmount;
 
-    for (let i = 1; i <= Math.min(n, 12); i++) {
+    for (let i = 1; i <= n; i++) {
         const interest = Math.round(balance * r * 100) / 100;
-        const principal = Math.round((monthlyPayment - interest) * 100) / 100;
+        const principal = Math.round((monthlyPI - interest) * 100) / 100;
         balance = Math.round((balance - principal) * 100) / 100;
-        schedule.push({ month: i, payment: monthlyPayment, principal, interest, balance: Math.max(0, balance) });
+        schedule.push({ month: i, payment: monthlyPI, principal, interest, balance: Math.max(0, balance) });
     }
 
-    const totalPayment = Math.round(monthlyPayment * n * 100) / 100;
+    const totalPayment = Math.round(monthlyPI * n * 100) / 100;
     const totalInterest = Math.round((totalPayment - loanAmount) * 100) / 100;
 
-    return { monthlyPayment, totalPayment, totalInterest, loanAmount: Math.round(loanAmount * 100) / 100, schedule };
+    return {
+        monthlyPI,
+        monthlyPayment,
+        totalPayment,
+        totalInterest,
+        loanAmount: Math.round(loanAmount * 100) / 100,
+        extras: { tax, insurance, pmi, hoa },
+        schedule,
+    };
+}
+
+/* ─── CGPA to Percentage ─── */
+
+export type CGPAScheme = "standard" | "vtu" | "aktu" | "mumbai";
+
+export interface CGPAResult {
+    percentage: number;
+    formula: string;
+}
+
+export function cgpaToPercentage(cgpa: number, scheme: CGPAScheme): CGPAResult {
+    switch (scheme) {
+        case "standard":
+            return { percentage: Math.round(cgpa * 9.5 * 100) / 100, formula: "CGPA × 9.5" };
+        case "vtu":
+            return { percentage: Math.round((cgpa - 0.75) * 10 * 100) / 100, formula: "(CGPA − 0.75) × 10" };
+        case "aktu":
+            return { percentage: Math.round((cgpa * 10 - 7.5) * 100) / 100, formula: "(CGPA × 10) − 7.5" };
+        case "mumbai":
+            return { percentage: Math.round((7.25 * cgpa + 11) * 100) / 100, formula: "7.25 × CGPA + 11" };
+    }
 }

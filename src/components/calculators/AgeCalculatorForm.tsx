@@ -1,27 +1,20 @@
 "use client";
 
-import { useState } from "react";
-import { calculateAge, type AgeResult } from "@/lib/formulas";
+import { useState, useMemo } from "react";
+import { calculateAge } from "@/lib/formulas";
 
 export default function AgeCalculatorForm() {
     const [dob, setDob] = useState("");
     const [targetDate, setTargetDate] = useState("");
-    const [result, setResult] = useState<AgeResult | null>(null);
 
-    function handleCalculate() {
-        if (!dob) return;
+    const result = useMemo(() => {
+        if (!dob) return null;
         const birth = new Date(dob);
+        if (isNaN(birth.getTime())) return null;
         const target = targetDate ? new Date(targetDate) : new Date();
-        if (isNaN(birth.getTime())) return;
-        if (target < birth) return;
-        setResult(calculateAge(birth, target));
-    }
-
-    function handleReset() {
-        setDob("");
-        setTargetDate("");
-        setResult(null);
-    }
+        if (isNaN(target.getTime()) || target < birth) return null;
+        return calculateAge(birth, target);
+    }, [dob, targetDate]);
 
     return (
         <div>
@@ -55,18 +48,8 @@ export default function AgeCalculatorForm() {
                 </div>
             </div>
 
-            <div style={{ display: "flex", gap: "0.75rem", marginTop: "1.25rem" }}>
-                <button className="calc-btn" onClick={handleCalculate} id="age-calculate">
-                    Calculate Age
-                </button>
-                <button className="calc-btn-outline" onClick={handleReset}>
-                    Reset
-                </button>
-            </div>
-
             {result && (
                 <div className="calc-result">
-                    {/* Main age display */}
                     <div style={{ textAlign: "center", marginBottom: "1.25rem" }}>
                         <div style={{ display: "flex", justifyContent: "center", gap: "1.5rem", flexWrap: "wrap" }}>
                             <div>
@@ -84,10 +67,9 @@ export default function AgeCalculatorForm() {
                         </div>
                     </div>
 
-                    {/* Additional details */}
                     <div className="result-grid">
                         <div className="result-item">
-                            <div className="result-item-label">Total Days</div>
+                            <div className="result-item-label">Total Days Lived</div>
                             <div className="result-item-value">{result.totalDays.toLocaleString()}</div>
                         </div>
                         <div className="result-item">
