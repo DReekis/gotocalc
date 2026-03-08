@@ -23,6 +23,7 @@ export default function Navbar() {
             >
                 <Link
                     href="/"
+                    prefetch={false}
                     style={{
                         color: "var(--fg)",
                         fontWeight: 800,
@@ -48,16 +49,16 @@ export default function Navbar() {
                     }}
                 >
                     <style dangerouslySetInnerHTML={{ __html: `::-webkit-scrollbar { display: none; }` }} />
-                    <Link href="/finance/sip-calculator" style={{ color: "var(--muted)" }}>
+                    <Link href="/finance/sip-calculator" prefetch={false} style={{ color: "var(--muted)" }}>
                         Finance
                     </Link>
-                    <Link href="/health/bmi-calculator" style={{ color: "var(--muted)" }}>
+                    <Link href="/health/bmi-calculator" prefetch={false} style={{ color: "var(--muted)" }}>
                         Health
                     </Link>
-                    <Link href="/math/percentage-calculator" style={{ color: "var(--muted)" }}>
+                    <Link href="/math/percentage-calculator" prefetch={false} style={{ color: "var(--muted)" }}>
                         Math
                     </Link>
-                    <Link href="/education/cgpa-to-percentage-calculator" style={{ color: "var(--muted)" }}>
+                    <Link href="/education/cgpa-to-percentage-calculator" prefetch={false} style={{ color: "var(--muted)" }}>
                         Education
                     </Link>
                 </div>

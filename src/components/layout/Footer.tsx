@@ -30,6 +30,7 @@ export default function Footer() {
                         <Link
                             key={c.slug}
                             href={`/${c.slug}`}
+                            prefetch={false}
                             style={{ color: "var(--muted)" }}
                         >
                             {c.title}

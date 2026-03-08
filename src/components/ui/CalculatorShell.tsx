@@ -43,8 +43,8 @@ export default function CalculatorShell({
                         <li key={i}>
                             {i < breadcrumbs.length - 1 ? (
                                 <>
-                                    <Link href={crumb.href}>{crumb.label}</Link>
-                                    <span aria-hidden="true">›</span>
+                                    <Link href={crumb.href} prefetch={false}>{crumb.label}</Link>
+                                    <span aria-hidden="true">{">"}</span>
                                 </>
                             ) : (
                                 <span className="current">{crumb.label}</span>
@@ -120,3 +120,4 @@ export default function CalculatorShell({
         </main>
     );
 }
+
