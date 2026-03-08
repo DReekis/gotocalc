@@ -269,6 +269,49 @@ export function percentChange(oldVal: number, newVal: number): number {
 
 /* ─── Mortgage (Full Cost + Full Amortization) ─── */
 
+/* --- Price Per Weight --- */
+
+export type WeightUnit = "kg" | "g" | "lb" | "oz";
+
+export const WEIGHT_UNIT_FACTORS_IN_GRAMS: Record<WeightUnit, number> = {
+    kg: 1000,
+    g: 1,
+    lb: 453.59237,
+    oz: 28.349523125,
+};
+
+export interface PriceByWeightResult {
+    totalPrice: number;
+    pricePerKg: number;
+    pricePerG: number;
+    pricePerLb: number;
+    pricePerOz: number;
+    pricePerGram: number;
+    quantityInGrams: number;
+}
+
+export function calculatePriceByWeight(
+    pricePerUnit: number,
+    priceUnit: WeightUnit,
+    quantity: number,
+    quantityUnit: WeightUnit
+): PriceByWeightResult {
+    const unitInGrams = WEIGHT_UNIT_FACTORS_IN_GRAMS[priceUnit];
+    const quantityInGrams = quantity * WEIGHT_UNIT_FACTORS_IN_GRAMS[quantityUnit];
+    const pricePerGram = pricePerUnit / unitInGrams;
+    const totalPrice = pricePerGram * quantityInGrams;
+
+    return {
+        totalPrice: Math.round(totalPrice * 100) / 100,
+        pricePerKg: Math.round(pricePerGram * WEIGHT_UNIT_FACTORS_IN_GRAMS.kg * 100) / 100,
+        pricePerG: Math.round(pricePerGram * WEIGHT_UNIT_FACTORS_IN_GRAMS.g * 10000) / 10000,
+        pricePerLb: Math.round(pricePerGram * WEIGHT_UNIT_FACTORS_IN_GRAMS.lb * 100) / 100,
+        pricePerOz: Math.round(pricePerGram * WEIGHT_UNIT_FACTORS_IN_GRAMS.oz * 100) / 100,
+        pricePerGram: Math.round(pricePerGram * 1000000) / 1000000,
+        quantityInGrams: Math.round(quantityInGrams * 1000) / 1000,
+    };
+}
+
 export interface MortgageExtras {
     annualTax: number;
     annualInsurance: number;

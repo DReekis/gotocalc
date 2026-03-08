@@ -42,6 +42,7 @@ const categories = [
 
 const prefetchPriority = [
   "/finance/sip-calculator",
+  "/finance/price-per-weight-calculator",
   "/health/bmi-calculator",
   "/math/percentage-calculator",
   "/finance/gst-calculator",
@@ -99,10 +100,18 @@ function getNetworkProfile(): NetworkProfile {
   };
 }
 
-function matchesSearch(calc: HomeCalculatorItem, query: string): boolean {
-  const haystack =
-    `${calc.title} ${calc.description} ${calc.categoryLabel} ${calc.slug}`.toLowerCase();
-  return haystack.includes(query);
+function getSearchScore(calc: HomeCalculatorItem, query: string): number {
+  const title = calc.title.toLowerCase();
+  const slug = calc.slug.toLowerCase();
+  const description = calc.description.toLowerCase();
+
+  if (title === query) return 0;
+  if (title.startsWith(query)) return 1;
+  if (title.includes(query)) return 2;
+  if (slug.includes(query)) return 3;
+  if (description.includes(query)) return 4;
+
+  return Number.POSITIVE_INFINITY;
 }
 
 function dedupePaths(paths: string[]): string[] {
@@ -132,8 +141,21 @@ export default function HomeCalculatorDirectory({ calculators }: Props) {
       return calculators;
     }
 
-    return calculators.filter((calc) => matchesSearch(calc, normalizedQuery));
+    return calculators
+      .map((calc, index) => ({
+        calc,
+        index,
+        score: getSearchScore(calc, normalizedQuery),
+      }))
+      .filter((entry) => Number.isFinite(entry.score))
+      .sort((a, b) => a.score - b.score || a.index - b.index)
+      .map((entry) => entry.calc);
   }, [calculators, normalizedQuery]);
+
+  const suggestedCalcs = useMemo(
+    () => (normalizedQuery ? filteredCalcs.slice(0, 3) : []),
+    [filteredCalcs, normalizedQuery],
+  );
 
   const prefetchPath = useCallback(
     (path: string) => {
@@ -253,7 +275,6 @@ export default function HomeCalculatorDirectory({ calculators }: Props) {
             onChange={(event) => setQuery(event.target.value)}
             placeholder="Search calculators (e.g. sip, bmi, gst)"
             autoComplete="off"
-            list="calculator-list"
             enterKeyHint="search"
             aria-label="Search all calculators"
             style={{
@@ -285,11 +306,63 @@ export default function HomeCalculatorDirectory({ calculators }: Props) {
           </button>
         </div>
 
-        <datalist id="calculator-list">
-          {calculators.map((calc) => (
-            <option key={calc.slug} value={calc.title} />
-          ))}
-        </datalist>
+        {suggestedCalcs.length > 0 && (
+          <div
+            style={{
+              border: "1px solid var(--border)",
+              borderRadius: 12,
+              background: "var(--bg)",
+              marginTop: "0.75rem",
+              padding: "0.75rem",
+            }}
+          >
+            <p
+              style={{
+                color: "var(--muted)",
+                fontSize: "0.8rem",
+                textAlign: "center",
+                margin: "0 0 0.5rem",
+              }}
+            >
+              Did you mean?
+            </p>
+            <div
+              style={{
+                display: "flex",
+                flexWrap: "wrap",
+                gap: "0.5rem",
+              }}
+            >
+              {suggestedCalcs.map((calc) => {
+                const path = `/${calc.slug}`;
+                return (
+                  <Link
+                    key={`suggested-${calc.slug}`}
+                    href={path}
+                    prefetch={false}
+                    onFocus={() => prefetchPath(path)}
+                    onTouchStart={() => prefetchPath(path)}
+                    onMouseEnter={() => {
+                      if (networkProfile.allowHoverPrefetch) {
+                        prefetchPath(path);
+                      }
+                    }}
+                    style={{
+                      border: "1px solid var(--border)",
+                      borderRadius: 999,
+                      padding: "0.4rem 0.7rem",
+                      fontSize: "0.9rem",
+                      lineHeight: 1.2,
+                      background: "var(--surface)",
+                    }}
+                  >
+                    {calc.title}
+                  </Link>
+                );
+              })}
+            </div>
+          </div>
+        )}
 
         {resultLabel && (
           <p

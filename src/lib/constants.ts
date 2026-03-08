@@ -123,6 +123,32 @@ export const CALCULATORS: CalculatorMeta[] = [
     ],
   },
   {
+    slug: "finance/price-per-weight-calculator",
+    title: "Price Per Weight Calculator",
+    description:
+      "Calculate grocery and meat prices across kg, g, lb, and oz instantly. Enter a base rate and quantity to get the exact payable amount.",
+    category: "finance",
+    categoryLabel: "Finance",
+    applicationCategory: "FinanceApplication",
+    faqs: [
+      {
+        question: "How do I calculate the price for 750 grams if rate is per kg?",
+        answer:
+          "Divide the per-kg price by 1000 to get price per gram, then multiply by 750. For example, 200 per kg becomes 0.2 per gram, so 750 grams costs 150.",
+      },
+      {
+        question: "Can I convert between kg, gram, pound, and ounce?",
+        answer:
+          "Yes. This calculator supports kilogram (kg), gram (g), pound (lb), and ounce (oz). You can set the base price in one unit and enter quantity in another unit.",
+      },
+      {
+        question: "Does this work for all currencies?",
+        answer:
+          "Yes. The calculator is currency-agnostic. It returns numeric amounts in the same currency unit as your input rate, whether INR, USD, EUR, or any other currency.",
+      },
+    ],
+  },
+  {
     slug: "health/bmi-calculator",
     title: "BMI Calculator",
     description:
