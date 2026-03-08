@@ -1,4 +1,5 @@
 import HomeCalculatorDirectory from "@/components/home/HomeCalculatorDirectory";
+import Link from "next/link";
 import { CALCULATORS } from "@/lib/constants";
 
 const homeCalculators = CALCULATORS.map((calc) => ({
@@ -27,6 +28,13 @@ export default function HomePage() {
         >
           Free Online Calculators
         </h1>
+        <p style={{ color: "var(--muted)", fontSize: "0.9rem", margin: 0 }}>
+          Popular tool:{" "}
+          <Link href="/age-calculator" prefetch={false}>
+            Age Calculator
+          </Link>
+          .
+        </p>
       </section>
 
       <HomeCalculatorDirectory calculators={homeCalculators} />

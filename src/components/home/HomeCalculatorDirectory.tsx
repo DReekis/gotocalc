@@ -48,7 +48,7 @@ const prefetchPriority = [
   "/finance/gst-calculator",
   "/education/cgpa-to-percentage-calculator",
   "/finance/mortgage-calculator",
-  "/health/age-calculator",
+  "/age-calculator",
   "/finance/income-tax-calculator-india",
   "/math/scientific-calculator",
 ] as const;

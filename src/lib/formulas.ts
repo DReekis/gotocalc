@@ -210,22 +210,58 @@ export interface AgeResult {
     years: number;
     months: number;
     days: number;
+    totalYears: number;
+    totalMonths: number;
+    totalWeeks: number;
     totalDays: number;
+    totalHours: number;
+    totalMinutes: number;
     nextBirthdayDays: number;
+    nextBirthdayDate: Date;
+    nextBirthdayDayName: string;
+    planetAges: {
+        mercury: number;
+        venus: number;
+        earth: number;
+        mars: number;
+        jupiter: number;
+        saturn: number;
+        uranus: number;
+        neptune: number;
+    };
+}
+
+const MS_PER_DAY = 1000 * 60 * 60 * 24;
+const EARTH_DAYS_PER_YEAR = 365.2425;
+const DAY_NAMES = [
+    "Sunday",
+    "Monday",
+    "Tuesday",
+    "Wednesday",
+    "Thursday",
+    "Friday",
+    "Saturday",
+] as const;
+
+function toUtcDateOnly(date: Date): Date {
+    return new Date(Date.UTC(date.getFullYear(), date.getMonth(), date.getDate()));
 }
 
 export function calculateAge(
     birthDate: Date,
     targetDate: Date = new Date()
 ): AgeResult {
-    let years = targetDate.getFullYear() - birthDate.getFullYear();
-    let months = targetDate.getMonth() - birthDate.getMonth();
-    let days = targetDate.getDate() - birthDate.getDate();
+    const birth = toUtcDateOnly(birthDate);
+    const target = toUtcDateOnly(targetDate);
+
+    let years = target.getUTCFullYear() - birth.getUTCFullYear();
+    let months = target.getUTCMonth() - birth.getUTCMonth();
+    let days = target.getUTCDate() - birth.getUTCDate();
 
     if (days < 0) {
         months--;
-        const prevMonth = new Date(targetDate.getFullYear(), targetDate.getMonth(), 0);
-        days += prevMonth.getDate();
+        const prevMonth = new Date(Date.UTC(target.getUTCFullYear(), target.getUTCMonth(), 0));
+        days += prevMonth.getUTCDate();
     }
 
     if (months < 0) {
@@ -233,22 +269,55 @@ export function calculateAge(
         months += 12;
     }
 
-    const diffTime = Math.abs(targetDate.getTime() - birthDate.getTime());
-    const totalDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
+    const diffTime = Math.abs(target.getTime() - birth.getTime());
+    const totalDays = Math.floor(diffTime / MS_PER_DAY);
+    const totalYears = years;
+    const totalMonths = years * 12 + months;
+    const totalWeeks = Math.floor(totalDays / 7);
+    const totalHours = totalDays * 24;
+    const totalMinutes = totalHours * 60;
 
     const nextBirthday = new Date(
-        targetDate.getFullYear(),
-        birthDate.getMonth(),
-        birthDate.getDate()
+        Date.UTC(
+            target.getUTCFullYear(),
+            birth.getUTCMonth(),
+            birth.getUTCDate()
+        )
     );
-    if (nextBirthday <= targetDate) {
-        nextBirthday.setFullYear(nextBirthday.getFullYear() + 1);
+    if (nextBirthday <= target) {
+        nextBirthday.setUTCFullYear(nextBirthday.getUTCFullYear() + 1);
     }
     const nextBirthdayDays = Math.ceil(
-        (nextBirthday.getTime() - targetDate.getTime()) / (1000 * 60 * 60 * 24)
+        (nextBirthday.getTime() - target.getTime()) / MS_PER_DAY
     );
 
-    return { years, months, days, totalDays, nextBirthdayDays };
+    const earthAgeYears = totalDays / EARTH_DAYS_PER_YEAR;
+    const planetAges = {
+        mercury: earthAgeYears / 0.2408467,
+        venus: earthAgeYears / 0.61519726,
+        earth: earthAgeYears,
+        mars: earthAgeYears / 1.8808158,
+        jupiter: earthAgeYears / 11.862615,
+        saturn: earthAgeYears / 29.447498,
+        uranus: earthAgeYears / 84.016846,
+        neptune: earthAgeYears / 164.79132,
+    };
+
+    return {
+        years,
+        months,
+        days,
+        totalYears,
+        totalMonths,
+        totalWeeks,
+        totalDays,
+        totalHours,
+        totalMinutes,
+        nextBirthdayDays,
+        nextBirthdayDate: nextBirthday,
+        nextBirthdayDayName: DAY_NAMES[nextBirthday.getUTCDay()],
+        planetAges,
+    };
 }
 
 /* ─── Percentage ─── */

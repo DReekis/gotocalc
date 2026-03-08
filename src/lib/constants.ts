@@ -180,28 +180,48 @@ export const CALCULATORS: CalculatorMeta[] = [
     ],
   },
   {
-    slug: "health/age-calculator",
+    slug: "age-calculator",
     title: "Age Calculator",
     description:
-      "Calculate your exact age in years, months, and days. Find out your precise chronological age from your date of birth to today or any target date.",
+      "Calculate exact age in years, months, days, and more. Get a detailed breakdown, next birthday countdown, and age on other planets instantly.",
     category: "health",
     categoryLabel: "Health",
-    applicationCategory: "HealthApplication",
+    applicationCategory: "Utility",
     faqs: [
       {
-        question: "How is exact age calculated in years, months, and days?",
+        question: "What is an age calculator?",
         answer:
-          "The calculator subtracts the birth date from the target date. It first calculates complete years, then remaining complete months, and finally remaining days. It correctly handles varying month lengths and leap years for accurate results.",
+          "An age calculator is an online tool that finds your exact age from your date of birth to today or any selected date. It usually returns years, months, and days, plus extra details such as total days lived.",
       },
       {
-        question: "Does the age calculator handle leap years?",
+        question: "How does an age calculator work?",
         answer:
-          "Yes. The calculator accounts for leap years (years divisible by 4, except centuries not divisible by 400). If your birthday is February 29, the calculator still provides an accurate age relative to the target date.",
+          "It subtracts your birth date from a target date, then adjusts for month lengths and borrowed days. A good calculator uses native date logic to account for 28, 29, 30, and 31-day months.",
       },
       {
-        question: "Can I calculate my age on a specific date?",
+        question: "How do leap years affect age?",
         answer:
-          "Absolutely. Use the target date field to calculate your age as of any past or future date — not just today. This is useful for determining eligibility for exams, retirement, legal age requirements, and more.",
+          "Leap years add an extra day in February, which changes total day counts and next birthday calculations. Accurate tools include leap years automatically so day-level results stay correct.",
+      },
+      {
+        question: "Can I calculate age between two dates?",
+        answer:
+          "Yes. You can enter a date of birth and a custom target date to calculate age between any two dates. This is useful for age eligibility checks and date-based planning.",
+      },
+      {
+        question: "How accurate is an online age calculator?",
+        answer:
+          "A calculator is highly accurate when it uses exact date arithmetic, leap-year rules, and month-by-month adjustments. Small differences can appear if different tools use different assumptions for time zones or rounding.",
+      },
+      {
+        question: "How to calculate age manually?",
+        answer:
+          "Subtract birth year from target year, then subtract birth month/day from target month/day. If days are negative, borrow days from the previous month; if months are negative, borrow 12 months from years.",
+      },
+      {
+        question: "Why do different calculators show different results?",
+        answer:
+          "Different tools may use different assumptions, such as whether to include the current day, how to handle leap-day birthdays, and which time zone the dates use. These small rules can change totals by one day.",
       },
     ],
   },

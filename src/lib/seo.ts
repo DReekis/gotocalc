@@ -30,13 +30,13 @@ export function generateCalculatorMetadata(calc: CalculatorMeta): Metadata {
 
 export function generateWebAppSchema(calc: CalculatorMeta) {
     return {
-        "@type": "SoftwareApplication",
+        "@type": "WebApplication",
         "@id": `${SITE_URL}/${calc.slug}#app`,
         name: calc.title,
         description: calc.description,
         url: `${SITE_URL}/${calc.slug}`,
         applicationCategory: calc.applicationCategory,
-        operatingSystem: "All",
+        operatingSystem: "Any",
         offers: {
             "@type": "Offer",
             price: "0",

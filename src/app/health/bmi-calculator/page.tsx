@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import dynamic from "next/dynamic";
+import Link from "next/link";
 import CalculatorShell from "@/components/ui/CalculatorShell";
 import CalculatorSchema from "@/components/seo/CalculatorSchema";
 import CalcSkeleton from "@/components/ui/CalcSkeleton";
@@ -102,6 +103,18 @@ export default function BmiCalculatorPage() {
               fitness level, and medical history.
             </p>
           </>
+        }
+        extraContent={
+          <section>
+            <h2>Related Calculators</h2>
+            <p>
+              If you are checking health metrics and eligibility, use our{" "}
+              <Link href="/age-calculator" prefetch={false}>
+                Age Calculator
+              </Link>{" "}
+              for exact age in years, months, and days.
+            </p>
+          </section>
         }
         faqs={calc.faqs}
       >

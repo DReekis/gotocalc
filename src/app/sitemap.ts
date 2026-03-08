@@ -6,7 +6,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
         url: `${SITE_URL}/${calc.slug}`,
         lastModified: new Date(),
         changeFrequency: 'weekly' as const,
-        priority: 0.8,
+        priority: calc.slug === 'age-calculator' ? 1.0 : 0.8,
     }))
 
     return [

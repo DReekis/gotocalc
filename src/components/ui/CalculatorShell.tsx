@@ -19,6 +19,8 @@ interface Props {
     definitionTitle?: string;
     definitionContent?: React.ReactNode;
     faqs?: FAQItem[];
+    faqTitle?: string;
+    extraContent?: React.ReactNode;
 }
 
 export default function CalculatorShell({
@@ -33,6 +35,8 @@ export default function CalculatorShell({
     definitionTitle,
     definitionContent,
     faqs,
+    faqTitle,
+    extraContent,
 }: Props) {
     return (
         <main style={{ margin: "0 auto", maxWidth: 720, padding: "1.5rem 1rem 3rem" }}>
@@ -105,9 +109,11 @@ export default function CalculatorShell({
                     </section>
                 )}
 
+                {extraContent}
+
                 {faqs && faqs.length > 0 && (
                     <section>
-                        <h2>People Also Ask</h2>
+                        <h2>{faqTitle ?? "People Also Ask"}</h2>
                         {faqs.map((faq, i) => (
                             <details key={i} className="faq-item">
                                 <summary>{faq.question}</summary>
