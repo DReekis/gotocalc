@@ -40,6 +40,10 @@ export default function RootLayout({
     <html lang="en">
       <head>
         <meta
+          name="google-site-verification"
+          content="zt-gMhsCJ2yTAeLNRAaA3mc1OaBf32-XMeedDkpxQZA"
+        />
+        <meta
           name="theme-color"
           content="#0a0a0a"
           media="(prefers-color-scheme: dark)"
