@@ -455,25 +455,3 @@ export function calculateMortgage(
         schedule,
     };
 }
-
-/* ─── CGPA to Percentage ─── */
-
-export type CGPAScheme = "standard" | "vtu" | "aktu" | "mumbai";
-
-export interface CGPAResult {
-    percentage: number;
-    formula: string;
-}
-
-export function cgpaToPercentage(cgpa: number, scheme: CGPAScheme): CGPAResult {
-    switch (scheme) {
-        case "standard":
-            return { percentage: Math.round(cgpa * 9.5 * 100) / 100, formula: "CGPA × 9.5" };
-        case "vtu":
-            return { percentage: Math.round((cgpa - 0.75) * 10 * 100) / 100, formula: "(CGPA − 0.75) × 10" };
-        case "aktu":
-            return { percentage: Math.round((cgpa * 10 - 7.5) * 100) / 100, formula: "(CGPA × 10) − 7.5" };
-        case "mumbai":
-            return { percentage: Math.round((7.25 * cgpa + 11) * 100) / 100, formula: "7.25 × CGPA + 11" };
-    }
-}

@@ -19,6 +19,8 @@
   --border: #e5e5e4;
   --muted: #78716c;
   --focus: #2563eb;
+  --focus-soft: rgba(37, 99, 235, 0.12);
+  --focus-border-soft: rgba(37, 99, 235, 0.32);
   --success: #16a34a;
   --danger: #dc2626;
 }
@@ -32,6 +34,8 @@
     --border: #262626;
     --muted: #a3a3a3;
     --focus: #3b82f6;
+    --focus-soft: rgba(59, 130, 246, 0.18);
+    --focus-border-soft: rgba(59, 130, 246, 0.42);
     --success: #22c55e;
     --danger: #ef4444;
   }

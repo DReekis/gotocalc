@@ -79,7 +79,10 @@ export function generateBreadcrumbSchema(
     };
 }
 
-export function buildSchemaGraph(calc: CalculatorMeta) {
+export function buildSchemaGraph(
+    calc: CalculatorMeta,
+    extraGraph: Record<string, unknown>[] = []
+) {
     const crumbs = [
         { name: "Home", url: SITE_URL },
         {
@@ -98,6 +101,7 @@ export function buildSchemaGraph(calc: CalculatorMeta) {
             generateWebAppSchema(calc),
             generateFAQSchema(calc.faqs),
             generateBreadcrumbSchema(crumbs),
+            ...extraGraph,
         ],
     });
 }

@@ -1,0 +1,260 @@
+{
+  "_audit_notes": {
+    "imported_from": "/home/kira/Downloads/cgpa_calc(1).json",
+    "imported_on": "2026-03-18",
+    "import_mode": "full user-verified import",
+    "note": "All university entries from the user-provided JSON are included here as requested."
+  },
+  "universities": [
+    {
+      "id": "default",
+      "name": "Normal Calculation",
+      "formula": "cgpa * 9.5",
+      "formulaDisplay": "CGPA × 9.5",
+      "scale": 10,
+      "notes": "Generic CBSE / UGC-recommended conversion",
+      "description": "Use the common 10-point conversion when you do not have an official university circular.",
+      "explanation": "This follows the widely used CBSE-style approach on a 10-point scale and is the UGC-recommended default for standard conversions."
+    },
+    {
+      "id": "aktu",
+      "name": "AKTU",
+      "formula": "(cgpa - 0.75) * 10",
+      "formulaDisplay": "(CGPA − 0.75) × 10",
+      "scale": 10,
+      "notes": "Official formula per Letter No. AKTU/RO/2019/1421",
+      "description": "AKTU (Dr. A.P.J. Abdul Kalam Technical University, Lucknow) uses the university-published 10-point formula.",
+      "explanation": "Choose AKTU when your transcript uses a 10-point CGPA and you need the university-specific percentage mapping, valid from session 2018-19 onwards."
+    },
+    {
+      "id": "vtu",
+      "name": "VTU",
+      "formula": "(cgpa - 0.75) * 10",
+      "formulaDisplay": "(CGPA − 0.75) × 10",
+      "scale": 10,
+      "notes": "Official formula per VTU Notification VTU/Exam/Circular/2025/CGPA-PCT",
+      "description": "Visvesvaraya Technological University uses an institution-specific 10-point offset formula.",
+      "explanation": "Use VTU for engineering-grade conversions where the university formula matters. Note: (CGPA−0.75)×10 is algebraically identical to (10×CGPA)−7.5."
+    },
+    {
+      "id": "ktu",
+      "name": "KTU",
+      "formula": "(cgpa - 0.75) * 10",
+      "formulaDisplay": "(CGPA − 0.75) × 10",
+      "scale": 10,
+      "notes": "Official 10-point university formula",
+      "description": "APJ Abdul Kalam Technological University (Kerala) follows a 10-point conversion formula consistent with other technical universities.",
+      "explanation": "Select KTU when you need a 10-point university rule instead of a broader scale-based estimate."
+    },
+    {
+      "id": "anna",
+      "name": "Anna University",
+      "formula": "cgpa * 10",
+      "formulaDisplay": "CGPA × 10",
+      "scale": 10,
+      "notes": "Official formula per Letter No. 001/ACOE(UDs)/2021 dated 14.04.2021",
+      "description": "Anna University officially uses a direct 10× multiplier for CGPA to percentage conversion (Regulations R-2015, R-2018, R-2019, R-2021).",
+      "explanation": "Pick Anna University when your CGPA is on its standard 10-point scheme. This formula was confirmed by the Office of the Additional Controller of Examinations."
+    },
+    {
+      "id": "makaut",
+      "name": "MAKAUT",
+      "formula": "(cgpa - 0.75) * 10",
+      "formulaDisplay": "(CGPA − 0.75) × 10",
+      "scale": 10,
+      "notes": "Official formula per Letter No. COE/MAKAUT,WB/2021-22/0357 dated 02.12.2021",
+      "description": "Maulana Abul Kalam Azad University of Technology (West Bengal) uses an offset formula on its 10-point CGPA scale.",
+      "explanation": "MAKAUT follows an offset-based conversion similar to VTU and AKTU, as officially notified via circular."
+    },
+    {
+      "id": "mumbai",
+      "name": "Mumbai University (Engineering)",
+      "formula": "7.25 * cgpa + 11",
+      "formulaDisplay": "(7.25 × CGPA) + 11",
+      "scale": 10,
+      "notes": "Official formula for 10-pt engineering programs. Arts/Science/Commerce use a separate 7-pt scale table.",
+      "description": "Mumbai University Engineering uses a linear regression formula revised in 2018. Non-engineering programs follow a different 7-point scale.",
+      "explanation": "Use this for B.E./B.Tech programs under Mumbai University. If you're in Arts, Science, or Commerce, consult the 7-point scale table from your marksheet."
+    },
+    {
+      "id": "gtu",
+      "name": "GTU",
+      "formula": "(cgpa - 0.5) * 10",
+      "formulaDisplay": "(CGPA − 0.5) × 10",
+      "scale": 10,
+      "notes": "Official formula per GTU Circular GTU/Academic/2013/4903 dated 31-05-2013",
+      "description": "Gujarat Technological University uses a reduced-offset formula to convert 10-point CGPA/CPI/SPI to percentage.",
+      "explanation": "Select GTU when your transcript follows Gujarat Technological University's 10-point grading method. Applies to CGPA, SPI, and CPI inputs."
+    },
+    {
+      "id": "sppu",
+      "name": "SPPU",
+      "formula": "cgpa * 8.80",
+      "formulaDisplay": "CGPA × 8.80",
+      "scale": 10,
+      "notes": "Official formula per Circular No. 332-2020 (CBCS effective June 2019)",
+      "description": "Savitribai Phule Pune University (SPPU) issued a specific multiplier of 8.80 for CGPA-to-percentage conversion under the 2019 CBCS rulebook.",
+      "explanation": "SPPU's official multiplier is 8.80, not 10. This was notified via Circular No. 332-2020 and applies to all CBCS programs from June 2019 onwards."
+    },
+    {
+      "id": "bits",
+      "name": "BITS Pilani",
+      "formula": "cgpa * 10",
+      "formulaDisplay": "CGPA × 10",
+      "scale": 10,
+      "notes": "Official formula per ARC Circular No. BITSGOA/ACAD/ARC/2023-24/03 dated 18-09-2023",
+      "description": "BITS Pilani uses a direct 10-point conversion from CGPA to percentage as per their Academic Review Committee circular.",
+      "explanation": "Choose BITS Pilani for a straight 10-point conversion as officially notified. Applies to all campuses (Pilani, Goa, Hyderabad)."
+    },
+    {
+      "id": "bharathiar",
+      "name": "Bharathiar University",
+      "formula": "cgpa * 10",
+      "formulaDisplay": "CGPA × 10",
+      "scale": 10,
+      "notes": "Direct 10-point scale conversion",
+      "description": "Bharathiar University uses a direct multiplier on its 10-point CGPA scale.",
+      "explanation": "Suited for Bharathiar University transcripts that report CGPA on a standard 10-point scale without additional adjustment."
+    },
+    {
+      "id": "burdwan",
+      "name": "Burdwan University",
+      "formula": "cgpa * 10",
+      "formulaDisplay": "CGPA × 10",
+      "scale": 10,
+      "notes": "Direct 10-point scale conversion",
+      "description": "The University of Burdwan is configured with a direct 10-point CGPA conversion.",
+      "explanation": "Use this when Burdwan University grades are expressed on a standard 10-point scale."
+    },
+    {
+      "id": "bput",
+      "name": "Biju Patnaik University of Technology",
+      "formula": "(cgpa - 0.5) * 10",
+      "formulaDisplay": "(CGPA − 0.5) × 10",
+      "scale": 10,
+      "notes": "Official 10-point university formula",
+      "description": "BPUT uses a 10-point CGPA formula with a small offset before scaling to percentage.",
+      "explanation": "BPUT conversions are best handled with the university-specific offset rule instead of a plain multiplier."
+    },
+    {
+      "id": "jntu",
+      "name": "JNTU",
+      "formula": "(cgpa - 0.75) * 10",
+      "formulaDisplay": "(CGPA − 0.75) × 10",
+      "scale": 10,
+      "notes": "Official formula per B.Tech Academic Regulations R16/R18/R22, Clause 11.2",
+      "description": "Jawaharlal Nehru Technological University uses an adjusted 10-point formula for percentage conversion. Applies to JNTUH, JNTUK, and JNTUA.",
+      "explanation": "Choose JNTU for all three affiliates (Hyderabad, Kakinada, Anantapur). The formula is consistent across R16, R18, and R22 regulations."
+    },
+    {
+      "id": "du",
+      "name": "Delhi University",
+      "formula": "cgpa * 9.5",
+      "formulaDisplay": "CGPA × 9.5",
+      "scale": 10,
+      "notes": "Official formula per DU Examination Branch circular dated 11.01.2018",
+      "description": "Delhi University officially uses the 9.5 multiplier, confirmed via circular in 2018. Maximum equivalent is capped at 95%.",
+      "explanation": "Select Delhi University for the officially notified DU CGPA to percentage formula. Note: a CGPA of 10 maps to 95%, not 100%."
+    },
+    {
+      "id": "iit_nit",
+      "name": "IIT / NIT",
+      "formula": "cgpa * 10",
+      "formulaDisplay": "CGPA × 10",
+      "scale": 10,
+      "notes": "Commonly used direct 10-point conversion across IITs and NITs",
+      "description": "Most IITs and NITs use a direct 10-point CGPA-to-percentage conversion. Some campuses may use (CGPA − 0.5) × 10 — verify with your specific institution.",
+      "explanation": "IIT Bombay, Delhi, Madras, Kanpur and most NITs follow the direct 10x rule. Always cross-check with your official transcript or academic office."
+    },
+    {
+      "id": "vit",
+      "name": "VIT (Vellore)",
+      "formula": "cgpa * 9.5",
+      "formulaDisplay": "CGPA × 9.5",
+      "scale": 10,
+      "notes": "Widely used standard conversion for VIT University",
+      "description": "VIT University (Vellore Institute of Technology) follows the standard 9.5 multiplier conversion on its 10-point CGPA scale.",
+      "explanation": "Use this for VIT Vellore, VIT Chennai, VIT Bhopal, and VIT AP campuses. The 9.5 factor aligns with the UGC-recommended conversion."
+    },
+    {
+      "id": "srm",
+      "name": "SRM Institute",
+      "formula": "cgpa * 9.5",
+      "formulaDisplay": "CGPA × 9.5",
+      "scale": 10,
+      "notes": "Standard UGC-aligned conversion",
+      "description": "SRM Institute of Science and Technology uses the standard 9.5 multiplier conversion as per its Academic Regulations 2021.",
+      "explanation": "Applies to all SRM campuses (Kattankulathur, NCR, Ramapuram). Consistent with the UGC-recommended formula."
+    },
+    {
+      "id": "manipal",
+      "name": "Manipal University",
+      "formula": "(cgpa - 0.75) * 10",
+      "formulaDisplay": "(CGPA − 0.75) × 10",
+      "scale": 10,
+      "notes": "Official formula per Manipal University Academic Handbook 2022-23 and Revised Examination Bye-Laws, September 2024",
+      "description": "Manipal University uses an offset-based formula consistent with the university's academic handbook.",
+      "explanation": "Applies to MIT Manipal, Manipal University Jaipur, Sikkim Manipal University, and MIT Pune. Formula verified per the 2024 revised bye-laws."
+    },
+    {
+      "id": "ggsipu",
+      "name": "GGSIPU",
+      "formula": "cgpa * 9.5",
+      "formulaDisplay": "CGPA × 9.5",
+      "scale": 10,
+      "notes": "Official formula per GGSIPU Notification No. GGSIPU/COE/2024/11150124 dated 15.01.2024",
+      "description": "Guru Gobind Singh Indraprastha University (Delhi) follows the UGC-recommended 9.5 multiplier as officially notified in 2024.",
+      "explanation": "Use GGSIPU for all affiliated colleges under IPU Delhi. The 2024 ordinance confirmed the 9.5 multiplier for UG and PG programs."
+    },
+    {
+      "id": "amity",
+      "name": "Amity University",
+      "formula": "cgpa * 9.5",
+      "formulaDisplay": "CGPA × 9.5",
+      "scale": 10,
+      "notes": "Official formula per Letter No. AUE/COE/UG/2023-24/015 dated 12.07.2023",
+      "description": "Amity University uses the standard 9.5 multiplier as officially confirmed by the Controller of Examinations in 2023.",
+      "explanation": "Applies to all Amity University campuses and UG/PG programs on the 10-point CGPA scale."
+    },
+    {
+      "id": "rtmnu",
+      "name": "Nagpur University (RTMNU)",
+      "formula": "cgpa * 10",
+      "formulaDisplay": "CGPA × 10",
+      "scale": 10,
+      "notes": "Direct 10-point scale conversion — verify with your department or marksheet",
+      "description": "Rashtrasant Tukadoji Maharaj Nagpur University generally uses a direct 10-point multiplier. Verify with your specific course department.",
+      "explanation": "RTMNU's most common formula is the direct 10x conversion. Some courses may differ — confirm on your official marksheet."
+    },
+    {
+      "id": "lpu",
+      "name": "LPU",
+      "formula": "cgpa * 9.5",
+      "formulaDisplay": "CGPA × 9.5",
+      "scale": 10,
+      "notes": "Standard UGC-aligned conversion",
+      "description": "Lovely Professional University uses the standard UGC-recommended 9.5 multiplier on its 10-point CGPA scale.",
+      "explanation": "Applies to all LPU undergraduate and postgraduate programs. Consistent with UGC norms."
+    },
+    {
+      "id": "kiit",
+      "name": "KIIT University",
+      "formula": "cgpa * 9.5",
+      "formulaDisplay": "CGPA × 9.5",
+      "scale": 10,
+      "notes": "Standard UGC-aligned conversion",
+      "description": "Kalinga Institute of Industrial Technology (KIIT, Bhubaneswar) uses the standard UGC 9.5 multiplier on a 10-point CGPA scale.",
+      "explanation": "Applies to all KIIT programs. The 9.5 factor aligns with the UGC-recommended conversion formula."
+    },
+    {
+      "id": "osmania",
+      "name": "Osmania University",
+      "formula": "cgpa * 9.5",
+      "formulaDisplay": "CGPA × 9.5",
+      "scale": 10,
+      "notes": "Standard 10-point UGC conversion",
+      "description": "Osmania University (Hyderabad) follows the standard UGC-recommended 9.5 multiplier on its 10-point CGPA scale.",
+      "explanation": "Use this for Osmania University programs in Telangana. Consistent with the broader UGC CBCS framework."
+    }
+  ]
+}

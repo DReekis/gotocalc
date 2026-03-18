@@ -1,0 +1,31 @@
+{
+  "scales": [
+    {
+      "id": "4.0",
+      "name": "4.0",
+      "max": 4,
+      "conversion": "cgpa * 25",
+      "formulaDisplay": "CGPA × 25",
+      "description": "Generic 4.0 grading-scale conversion used when no university-specific percentage rule is published.",
+      "exampleValues": [2, 2.5, 3, 3.5, 4]
+    },
+    {
+      "id": "5.0",
+      "name": "5.0",
+      "max": 5,
+      "conversion": "cgpa * 20",
+      "formulaDisplay": "CGPA × 20",
+      "description": "Generic 5.0 grading-scale conversion for institutions that publish only the scale maximum.",
+      "exampleValues": [2.5, 3, 3.5, 4, 4.5, 5]
+    },
+    {
+      "id": "10.0",
+      "name": "10.0",
+      "max": 10,
+      "conversion": "cgpa * 10",
+      "formulaDisplay": "CGPA × 10",
+      "description": "Generic 10.0 grading-scale conversion when a university-specific formula is not selected.",
+      "exampleValues": [5, 6, 7, 8, 9, 10]
+    }
+  ]
+}

@@ -5,22 +5,38 @@ import CalculatorSchema from "@/components/seo/CalculatorSchema";
 import CalcSkeleton from "@/components/ui/CalcSkeleton";
 import { getCalculatorBySlug } from "@/lib/constants";
 import { generateCalculatorMetadata } from "@/lib/seo";
+import {
+  buildUniversityFormulaSchema,
+  convertCgpaToPercentage,
+  getGradeScales,
+  getUniversityFormulas,
+} from "@/lib/gradeCalculators";
 
 const CgpaForm = dynamic(() => import("@/components/calculators/CgpaForm"), {
   loading: () => <CalcSkeleton />,
 });
 
 const calc = getCalculatorBySlug("education/cgpa-to-percentage-calculator")!;
+const pagePath = "/education/cgpa-to-percentage-calculator";
+const universities = getUniversityFormulas();
+const gradeScales = getGradeScales();
+const exampleValues = [6, 7.5, 8.5, 9.2];
+const comparisonUniversities = universities.filter((university) =>
+  ["default", "vtu", "anna", "sppu"].includes(university.id)
+);
 
 export const metadata: Metadata = generateCalculatorMetadata(calc);
 
 export default function CgpaToPercentagePage() {
   return (
     <>
-      <CalculatorSchema calc={calc} />
+      <CalculatorSchema
+        calc={calc}
+        extraGraph={buildUniversityFormulaSchema(pagePath)}
+      />
       <CalculatorShell
         title="CGPA to Percentage Calculator"
-        subtitle="Convert your CGPA to equivalent percentage using exact university-approved conversion formulas. Supports CBSE, VTU, AKTU, and Mumbai University."
+        subtitle="Convert CGPA to percentage with a JSON-backed university formula database, switch between 4.0, 5.0, and 10.0 scales, and open six related grade calculators from the same tabbed interface."
         breadcrumbs={[
           { label: "Home", href: "/" },
           {
@@ -37,55 +53,131 @@ export default function CgpaToPercentagePage() {
           <>
             <p>
               CGPA (Cumulative Grade Point Average) is a grading system used by
-              schools and universities to evaluate academic performance on a
-              scale of 0 to 10 (or sometimes 0 to 4). It averages the grade
-              points earned in all subjects across semesters.
+              schools and universities to summarize academic performance across
+              subjects or semesters. Depending on the institution, the same
+              academic record may be published on a 4.0, 5.0, or 10.0 grading
+              scale.
             </p>
             <p>
-              Many employers, universities and competitive exams require
-              percentage equivalents of CGPA. Since different institutions use
-              different conversion formulas, using the correct formula for your
-              university is important for accurate conversions.
+              Recruiters, postgraduate applications, scholarship forms, and
+              credential evaluators often ask for percentage equivalents. This
+              page keeps every calculation client-side and lets you switch
+              between university formulas, scale-based fallbacks, SGPA tools,
+              GPA tools, and final-grade planning without leaving the page.
             </p>
           </>
         }
-        formulaTitle="CGPA to Percentage Conversion Formulas"
+        formulaTitle="University Formulas and Scale Rules"
         formulaContent={
           <>
-            <h3>CBSE / Standard Formula</h3>
-            <div className="formula-block">Percentage = CGPA × 9.5</div>
-            <p>Used by CBSE and most central boards. A CGPA of 8.5 = 80.75%.</p>
+            <p>
+              The calculator reads formula strings from a local JSON database.
+              When a university has a matching formula for the selected scale,
+              that university rule is applied directly. If you switch to a
+              different scale, the calculator falls back to the generic scale
+              conversion stored in the scale database.
+            </p>
+            <p>
+              The university list on this page is maintained from the formula
+              database used by the calculator. It combines university-specific
+              entries with generic scale fallbacks so users can pick the rule
+              that matches their transcript.
+            </p>
 
-            <h3>VTU (Visvesvaraya Technological University)</h3>
-            <div className="formula-block">Percentage = (CGPA − 0.75) × 10</div>
-            <p>Used by VTU for engineering courses. A CGPA of 8.5 = 77.5%.</p>
+            <div className="grade-content-grid">
+              {universities.map((university) => (
+                <article key={university.id} className="grade-content-card">
+                  <h3>{university.name}</h3>
+                  <div className="formula-block">
+                    Percentage = {university.formulaDisplay}
+                  </div>
+                  <p>{university.description}</p>
+                </article>
+              ))}
+            </div>
 
-            <h3>AKTU (APJ Abdul Kalam Technological University)</h3>
-            <div className="formula-block">Percentage = (CGPA × 10) − 7.5</div>
-            <p>Used by AKTU. A CGPA of 8.5 = 77.5%.</p>
-
-            <h3>Mumbai University</h3>
-            <div className="formula-block">Percentage = 7.25 × CGPA + 11</div>
-            <p>Used by University of Mumbai. A CGPA of 8.5 = 72.625%.</p>
+            <h3>Generic scale fallbacks</h3>
+            <div className="grade-content-grid">
+              {gradeScales.map((scale) => (
+                <article key={scale.id} className="grade-content-card">
+                  <h3>{scale.name} scale</h3>
+                  <div className="formula-block">
+                    Percentage = {scale.formulaDisplay}
+                  </div>
+                  <p>{scale.description}</p>
+                </article>
+              ))}
+            </div>
           </>
         }
-        exampleTitle="Conversion Examples"
+        exampleTitle="Example CGPA Conversions"
         exampleContent={
           <>
-            <h3>Example: CGPA 9.2 (CBSE)</h3>
-            <div className="formula-block">
-              9.2 × 9.5 = <strong>87.4%</strong>
-            </div>
+            <p>
+              Inside the calculator, the example table updates whenever you
+              change the university or scale. The reference table below shows
+              how the same CGPA can map differently across common university
+              formulas.
+            </p>
 
-            <h3>Example: CGPA 7.8 (VTU)</h3>
-            <div className="formula-block">
-              (7.8 − 0.75) × 10 = <strong>70.5%</strong>
+            <div className="scrollable-table">
+              <table className="calc-table">
+                <thead>
+                  <tr>
+                    <th>CGPA</th>
+                    {comparisonUniversities.map((university) => (
+                      <th key={university.id}>{university.name}</th>
+                    ))}
+                  </tr>
+                </thead>
+                <tbody>
+                  {exampleValues.map((value) => (
+                    <tr key={value}>
+                      <td>{value}</td>
+                      {comparisonUniversities.map((university) => (
+                        <td key={university.id}>
+                          {convertCgpaToPercentage(value, university.id, "10.0").value}
+                          %
+                        </td>
+                      ))}
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
             </div>
+          </>
+        }
+        extraContent={
+          <>
+            <section>
+              <h2>How to Pick the Right Formula</h2>
+              <p>
+                Start with the university listed on your transcript. If the
+                transcript or official academic handbook already specifies a
+                conversion formula, use that option first. If your institution
+                only publishes a grading scale and not a dedicated conversion
+                rule, the scale-based fallback is the safer approximation.
+              </p>
+              <p>
+                The tabbed layout is designed so you can move between CGPA to
+                percentage, SGPA to CGPA, SGPA to percentage, and percentage to
+                CGPA without a reload. Marks percentage, GPA, and final-grade
+                planning tools are also available in the same calculator card.
+              </p>
+            </section>
 
-            <h3>Example: CGPA 8.0 (AKTU)</h3>
-            <div className="formula-block">
-              (8.0 × 10) − 7.5 = <strong>72.5%</strong>
-            </div>
+            <section>
+              <h2>University-Specific Notes</h2>
+              <div className="grade-content-grid">
+                {universities.map((university) => (
+                  <article key={university.id} className="grade-content-card">
+                    <h3>{university.name}</h3>
+                    <p>{university.explanation}</p>
+                    <p>{university.notes}</p>
+                  </article>
+                ))}
+              </div>
+            </section>
           </>
         }
         faqs={calc.faqs}

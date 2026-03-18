@@ -255,7 +255,7 @@ export const CALCULATORS: CalculatorMeta[] = [
     slug: "education/cgpa-to-percentage-calculator",
     title: "CGPA to Percentage Calculator",
     description:
-      "Convert CGPA to percentage instantly using exact university formulas for CBSE, VTU, AKTU, and Mumbai University. Compare results across all boards.",
+      "Convert CGPA to percentage with university formulas and 4.0, 5.0, and 10.0 grading scales. Includes SGPA to CGPA, SGPA to percentage, percentage to CGPA, GPA, marks percentage, and final grade tools.",
     category: "education",
     categoryLabel: "Education",
     applicationCategory: "EducationalApplication",
@@ -263,17 +263,27 @@ export const CALCULATORS: CalculatorMeta[] = [
       {
         question: "How do I convert CGPA to percentage for CBSE?",
         answer:
-          "For CBSE and most Indian boards, multiply your CGPA by 9.5. For example, a CGPA of 8.2 equals 8.2 × 9.5 = 77.9%. This is the standard conversion recommended by CBSE.",
+          "For CBSE-style 10-point grading, the common conversion is CGPA × 9.5. For example, a CGPA of 8.2 becomes 77.9%. If your university publishes a different rule, use that official formula instead of the generic multiplier.",
       },
       {
         question: "Why do different universities use different formulas?",
         answer:
-          "Each university calibrates its grading system differently. VTU uses (CGPA − 0.75) × 10, AKTU uses (CGPA × 10) − 7.5, and Mumbai University uses 7.25 × CGPA + 11. These formulas account for differences in how internal grades are weighted.",
+          "Each university calibrates its grade points differently. Some use a direct multiplier such as CGPA × 10, while others use adjusted formulas such as (CGPA − 0.75) × 10, (CGPA − 0.5) × 10, or even CGPA × 8.9. The correct percentage depends on the specific university regulation or conversion notice, not just the grading scale.",
       },
       {
-        question: "Can I use CGPA to percentage conversion for job applications?",
+        question: "What if my university uses a 4.0 or 5.0 grading scale?",
         answer:
-          "Yes, many recruiters accept the standard CBSE formula (CGPA × 9.5) as a reasonable conversion. However, if your university provides an official conversion formula, always use that one for formal applications.",
+          "Select the grading scale that matches your transcript. When the selected university does not have a dedicated formula for that scale, the calculator falls back to the generic JSON-based scale conversion so you can still estimate the percentage on a 4.0, 5.0, or 10.0 system.",
+      },
+      {
+        question: "Can I convert percentage back to CGPA?",
+        answer:
+          "Yes. The Percentage to CGPA tab reverses the active formula. For direct multipliers this is straightforward, while offset formulas have a limited valid range, so the calculator warns you when the selected percentage is outside the supported range for that university.",
+      },
+      {
+        question: "Can I use these conversions for job applications and admissions?",
+        answer:
+          "You can use them as working equivalents, but formal applications should always follow the method specified by the university, employer, or admission office. When an official conversion certificate or handbook exists, that source takes priority over any general estimate.",
       },
     ],
   },

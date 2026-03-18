@@ -367,6 +367,242 @@
     color: var(--fg);
 }
 
+/* ─── Grade Tools Hub ─── */
+.grade-shell-head {
+    display: grid;
+    gap: 0.35rem;
+    margin-bottom: 1.25rem;
+}
+
+.grade-shell-kicker {
+    color: var(--muted);
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    margin: 0;
+    text-transform: uppercase;
+}
+
+.grade-shell-title {
+    font-size: clamp(1.15rem, 4vw, 1.5rem);
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    line-height: 1.15;
+    margin: 0;
+}
+
+.grade-shell-copy {
+    color: var(--muted);
+    font-size: 0.9rem;
+    margin: 0;
+}
+
+.grade-tab-list {
+    gap: 0.25rem;
+    margin-bottom: 1.25rem;
+    padding-bottom: 0.25rem;
+}
+
+.grade-tab-btn {
+    background: var(--bg);
+    border: 1px solid transparent;
+    border-bottom-width: 1px;
+    border-radius: 999px;
+    min-height: 40px;
+    padding: 0.55rem 0.9rem;
+    text-transform: none;
+}
+
+.grade-tab-btn.active {
+    background: var(--fg);
+    border-color: var(--fg);
+    color: var(--bg);
+}
+
+.grade-panel-stack {
+    display: grid;
+    gap: 1rem;
+}
+
+.grade-field-grid {
+    display: grid;
+    gap: 1rem;
+    grid-template-columns: 1fr;
+}
+
+@media (min-width: 640px) {
+    .grade-field-grid {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+
+    .grade-field-grid.compact {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+
+.grade-context-card,
+.grade-result-card,
+.grade-table-card,
+.grade-editor-card,
+.grade-content-card {
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 1rem;
+}
+
+.grade-context-head,
+.grade-row-head {
+    align-items: center;
+    display: flex;
+    gap: 0.6rem;
+    justify-content: space-between;
+}
+
+.grade-context-title,
+.grade-row-head p {
+    color: var(--fg);
+    font-size: 0.9rem;
+    font-weight: 700;
+    margin: 0;
+}
+
+.grade-badge {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 999px;
+    color: var(--muted);
+    font-size: 0.72rem;
+    font-weight: 700;
+    padding: 0.2rem 0.55rem;
+    white-space: nowrap;
+}
+
+.grade-context-formula {
+    color: var(--fg);
+    font-family: ui-monospace, "Cascadia Mono", "Segoe UI Mono", Menlo, monospace;
+    font-size: 0.9rem;
+    font-weight: 700;
+    margin: 0.85rem 0 0.45rem;
+}
+
+.grade-context-copy,
+.grade-context-note,
+.grade-result-helper,
+.grade-result-copy,
+.grade-result-note,
+.grade-section-head p,
+.grade-content-card p {
+    color: var(--muted);
+    font-size: 0.88rem;
+    line-height: 1.6;
+    margin: 0;
+}
+
+.grade-context-note,
+.grade-result-note {
+    margin-top: 0.45rem;
+}
+
+.grade-result-card {
+    background: linear-gradient(180deg, var(--surface), var(--bg));
+}
+
+.grade-result-card.answer {
+    background: linear-gradient(180deg, var(--focus-soft), var(--surface));
+    border-color: var(--focus-border-soft);
+    box-shadow: 0 10px 24px rgba(15, 23, 42, 0.08);
+}
+
+.grade-result-card.answer .grade-result-eyebrow,
+.grade-result-card.answer .grade-result-helper,
+.grade-result-card.answer .grade-result-copy,
+.grade-result-card.answer .grade-result-note,
+.grade-result-card.answer .grade-result-meta {
+    color: var(--fg);
+}
+
+.grade-result-card.warning {
+    border-color: rgba(220, 38, 38, 0.35);
+}
+
+.grade-result-eyebrow {
+    color: var(--muted);
+    font-size: 0.76rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    margin: 0;
+    text-transform: uppercase;
+}
+
+.grade-result-number {
+    color: var(--fg);
+    font-size: clamp(2rem, 8vw, 3rem);
+    font-weight: 800;
+    letter-spacing: -0.03em;
+    line-height: 1;
+    margin: 0.3rem 0 0.45rem;
+}
+
+.grade-result-meta {
+    color: var(--muted);
+    font-size: 0.82rem;
+    margin: 0.8rem 0 0;
+}
+
+.grade-result-meta span {
+    color: var(--fg);
+    font-family: ui-monospace, "Cascadia Mono", "Segoe UI Mono", Menlo, monospace;
+}
+
+.grade-section-head {
+    display: grid;
+    gap: 0.3rem;
+    margin-bottom: 0.85rem;
+}
+
+.grade-section-head h3,
+.grade-content-card h3 {
+    color: var(--fg);
+    font-size: 0.95rem;
+    font-weight: 700;
+    margin: 0;
+}
+
+.grade-row-stack {
+    display: grid;
+    gap: 0.75rem;
+}
+
+.grade-row-card {
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 0.9rem;
+}
+
+.grade-inline-btn {
+    min-height: 36px;
+    width: fit-content;
+}
+
+.grade-error {
+    color: var(--danger);
+    font-size: 0.88rem;
+    margin: 0;
+}
+
+.grade-content-grid {
+    display: grid;
+    gap: 0.9rem;
+    grid-template-columns: 1fr;
+}
+
+@media (min-width: 640px) {
+    .grade-content-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+
 /* ─── Chip Group ─── */
 .chip-group {
     display: flex;
