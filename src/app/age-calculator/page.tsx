@@ -75,7 +75,7 @@ export default function AgeCalculatorPage() {
 
       <CalculatorShell
         title="Age Calculator"
-        subtitle="Calculate exact age with a full breakdown in years, months, weeks, days, hours, and minutes. See next birthday details and share your result URL."
+        subtitle="Calculate exact age with a full breakdown in years, months, weeks, days, hours, and minutes. Explore fun life stats, track your live birthday countdown, check exam age eligibility, and share your exact setup with a URL."
         breadcrumbs={[
           { label: "Home", href: "/" },
           { label: "Health", href: "/health/bmi-calculator" },
@@ -190,6 +190,37 @@ export default function AgeCalculatorPage() {
                 handling official forms.
               </p>
             </section>
+
+            <section>
+              <h2>Check Age Eligibility for Exams and Admissions</h2>
+              <p>
+                Many applications use a cut-off date and strict minimum or
+                maximum age rules. Instead of counting manually, you can compare
+                your date of birth against a custom age window in seconds.
+              </p>
+              <p>
+                This is useful for entrance exams, recruitment forms, admissions,
+                and any process where a one-day difference can change the result.
+              </p>
+              <p>
+                The built-in eligibility mode shows whether you qualify and by
+                exactly how many days you passed or missed the rule.
+              </p>
+            </section>
+
+            <section>
+              <h2>Save and Share Your Exact Age Setup</h2>
+              <p>
+                The calculator can store your date inputs and eligibility setup in
+                the page URL. That makes it easy to revisit the same calculation
+                later or share it with family, students, or applicants.
+              </p>
+              <p>
+                Shared links are helpful when you want someone else to verify a
+                date of birth, review a cut-off rule, or compare age on the same
+                target date without re-entering every field.
+              </p>
+            </section>
           </>
         }
         faqs={calc.faqs}
@@ -200,4 +231,3 @@ export default function AgeCalculatorPage() {
     </>
   );
 }
-

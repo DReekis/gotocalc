@@ -142,6 +142,11 @@
     border-color: var(--fg);
 }
 
+.calc-btn-outline:disabled {
+    cursor: not-allowed;
+    opacity: 0.55;
+}
+
 /* ─── Results ─── */
 .calc-result {
     border-top: 1px solid var(--border);
@@ -211,10 +216,105 @@
     margin: 0.35rem 0 0;
 }
 
+.age-form-root {
+    position: relative;
+}
+
 .age-validation-error {
     color: var(--danger);
     font-size: 0.85rem;
     margin: 0.75rem 0 0;
+}
+
+.age-mode-card {
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    margin-top: 1rem;
+    padding: 1rem;
+}
+
+.age-toggle-row {
+    align-items: center;
+    display: flex;
+    gap: 1rem;
+    justify-content: space-between;
+}
+
+.age-toggle-title {
+    color: var(--fg);
+    font-size: 0.95rem;
+    font-weight: 700;
+    margin: 0;
+}
+
+.age-toggle-copy {
+    color: var(--muted);
+    font-size: 0.82rem;
+    line-height: 1.5;
+    margin: 0.25rem 0 0;
+    max-width: 52ch;
+}
+
+.age-toggle-input {
+    accent-color: var(--focus);
+    flex-shrink: 0;
+    height: 1.1rem;
+    width: 1.1rem;
+}
+
+.age-mode-stack {
+    border-top: 1px solid var(--border);
+    display: grid;
+    gap: 1rem;
+    margin-top: 1rem;
+    padding-top: 1rem;
+}
+
+.age-eligibility-grid,
+.age-limit-grid {
+    display: grid;
+    gap: 1rem;
+    grid-template-columns: 1fr;
+}
+
+@media (min-width: 640px) {
+    .age-eligibility-grid,
+    .age-limit-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+
+.age-limit-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 0.85rem;
+}
+
+.age-limit-title {
+    color: var(--fg);
+    font-size: 0.9rem;
+    font-weight: 700;
+    margin: 0 0 0.7rem;
+}
+
+.age-limit-fields {
+    display: grid;
+    gap: 0.75rem;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.age-mode-note {
+    color: var(--muted);
+    font-size: 0.8rem;
+    line-height: 1.5;
+    margin: 0;
+}
+
+.age-mode-note a {
+    color: var(--fg);
+    text-decoration: underline;
 }
 
 .age-result-stack {
@@ -254,6 +354,28 @@
     margin: 0 0 0.7rem;
 }
 
+.age-panel-head {
+    align-items: center;
+    display: flex;
+    gap: 0.75rem;
+    justify-content: space-between;
+    margin-bottom: 0.7rem;
+}
+
+@media (max-width: 639px) {
+    .age-panel-head {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+}
+
+.age-panel-copy {
+    color: var(--muted);
+    font-size: 0.82rem;
+    line-height: 1.5;
+    margin: -0.35rem 0 0;
+}
+
 .age-next-birthday-value {
     color: var(--fg);
     font-size: clamp(1.1rem, 4vw, 1.45rem);
@@ -272,6 +394,10 @@
     display: grid;
     gap: 0.6rem;
     grid-template-columns: 1fr;
+}
+
+.age-share-row.compact {
+    margin-top: 0.75rem;
 }
 
 @media (min-width: 640px) {
@@ -313,6 +439,112 @@
 
 .age-related-card:hover {
     border-color: var(--fg);
+}
+
+.age-alert-banner {
+    border: 1px solid;
+    border-radius: 4px;
+    padding: 1rem;
+}
+
+.age-alert-banner.eligible {
+    background: color-mix(in srgb, var(--success) 12%, var(--surface));
+    border-color: color-mix(in srgb, var(--success) 40%, var(--border));
+}
+
+.age-alert-banner.ineligible {
+    background: color-mix(in srgb, var(--danger) 10%, var(--surface));
+    border-color: color-mix(in srgb, var(--danger) 40%, var(--border));
+}
+
+.age-alert-title {
+    color: var(--fg);
+    font-size: 1rem;
+    font-weight: 800;
+    margin: 0 0 0.35rem;
+}
+
+.age-alert-copy {
+    color: var(--fg);
+    font-size: 0.86rem;
+    line-height: 1.55;
+    margin: 0.2rem 0 0;
+}
+
+.age-countdown-card {
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    margin-top: 0.9rem;
+    padding: 0.85rem;
+}
+
+.age-countdown-grid {
+    display: grid;
+    gap: 0.6rem;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+@media (min-width: 560px) {
+    .age-countdown-grid {
+        grid-template-columns: repeat(5, minmax(0, 1fr));
+    }
+}
+
+.age-countdown-item {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 0.75rem;
+    text-align: center;
+}
+
+.age-countdown-item span {
+    color: var(--fg);
+    display: block;
+    font-size: 1.35rem;
+    font-weight: 800;
+    letter-spacing: -0.03em;
+}
+
+.age-countdown-item small {
+    color: var(--muted);
+    display: block;
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    margin-top: 0.2rem;
+    text-transform: uppercase;
+}
+
+.age-countdown-note,
+.age-result-note {
+    color: var(--muted);
+    font-size: 0.8rem;
+    line-height: 1.5;
+    margin: 0.45rem 0 0;
+}
+
+.age-toast {
+    border-radius: 4px;
+    bottom: 1rem;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.18);
+    color: #fff;
+    font-size: 0.82rem;
+    font-weight: 600;
+    max-width: min(340px, calc(100vw - 2rem));
+    padding: 0.8rem 1rem;
+    position: fixed;
+    right: 1rem;
+    z-index: 20;
+}
+
+.age-toast.success {
+    background: var(--success);
+}
+
+.age-toast.error {
+    background: var(--danger);
 }
 
 /* ─── Progress Bar ─── */
