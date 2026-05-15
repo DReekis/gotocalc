@@ -133,6 +133,14 @@ export default function HomeCalculatorDirectory({ calculators }: Props) {
   const prefetchedPathsRef = useRef<Set<string>>(new Set());
   const [query, setQuery] = useState("");
   const [networkProfile] = useState<NetworkProfile>(getNetworkProfile);
+  const [isMobileSearchOpen, setIsMobileSearchOpen] = useState(false);
+  const searchInputRef = useRef<HTMLInputElement>(null);
+
+  useEffect(() => {
+    if (isMobileSearchOpen && searchInputRef.current) {
+      searchInputRef.current.focus();
+    }
+  }, [isMobileSearchOpen]);
 
   const normalizedQuery = query.trim().toLowerCase();
 
@@ -255,7 +263,164 @@ export default function HomeCalculatorDirectory({ calculators }: Props) {
 
   return (
     <>
+      <style dangerouslySetInnerHTML={{
+        __html: `
+        .desktop-search { display: block; }
+        .mobile-fab { display: none; }
+        .mobile-search-overlay { display: none; }
+        .calc-grid { grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)) !important; }
+        
+        @media (max-width: 768px) {
+          .desktop-search { display: none; }
+          .calc-grid { grid-template-columns: 1fr !important; }
+          .mobile-fab {
+            display: flex;
+            position: fixed;
+            bottom: 1.5rem;
+            right: 1.5rem;
+            width: 3.5rem;
+            height: 3.5rem;
+            border-radius: 50%;
+            background: var(--fg);
+            color: var(--bg);
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            z-index: 1000;
+            border: none;
+            cursor: pointer;
+            transition: transform 0.2s;
+          }
+          .mobile-fab:active {
+            transform: scale(0.95);
+          }
+          .mobile-search-overlay {
+            display: flex;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.4);
+            backdrop-filter: blur(4px);
+            z-index: 1001;
+            flex-direction: column;
+            justify-content: flex-end;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s;
+          }
+          .mobile-search-overlay.open {
+            opacity: 1;
+            pointer-events: auto;
+          }
+          .mobile-search-sheet {
+            background: var(--bg);
+            border-top-left-radius: 20px;
+            border-top-right-radius: 20px;
+            padding: 1.5rem;
+            transform: translateY(100%);
+            transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+            display: flex;
+            flex-direction: column;
+            max-height: 85vh;
+            box-shadow: 0 -4px 20px rgba(0,0,0,0.1);
+          }
+          .mobile-search-overlay.open .mobile-search-sheet {
+            transform: translateY(0);
+          }
+          .mobile-search-results {
+            flex: 1;
+            overflow-y: auto;
+            margin-bottom: 1rem;
+            display: flex;
+            flex-direction: column;
+          }
+          .mobile-search-result-item {
+            display: block;
+            padding: 1rem 0;
+            border-bottom: 1px solid var(--border);
+            text-decoration: none;
+            color: inherit;
+          }
+          .mobile-search-result-item:last-child {
+            border-bottom: none;
+          }
+        }
+      `}} />
+
+      {/* Mobile FAB */}
+      <button
+        className="mobile-fab"
+        onClick={() => setIsMobileSearchOpen(true)}
+        aria-label="Open search"
+      >
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+      </button>
+
+      {/* Mobile Search Overlay */}
+      <div
+        className={`mobile-search-overlay ${isMobileSearchOpen ? 'open' : ''}`}
+        onClick={() => setIsMobileSearchOpen(false)}
+      >
+        <div className="mobile-search-sheet" onClick={e => e.stopPropagation()}>
+          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "1rem" }}>
+            <h3 style={{ margin: 0, fontSize: "1.1rem" }}>Search Calculators</h3>
+            <button
+              onClick={() => setIsMobileSearchOpen(false)}
+              style={{ background: "none", border: "none", fontSize: "1.5rem", color: "var(--muted)", cursor: "pointer" }}
+            >
+              &times;
+            </button>
+          </div>
+
+          <div className="mobile-search-results">
+            {query && filteredCalcs.map((calc) => (
+              <Link
+                key={`mobile-${calc.slug}`}
+                href={`/${calc.slug}`}
+                className="mobile-search-result-item"
+                onClick={() => setIsMobileSearchOpen(false)}
+              >
+                <div style={{ fontWeight: 800, fontSize: "1.2rem", color: "var(--fg)", marginBottom: "0.25rem", letterSpacing: "-0.02em" }}>{calc.title}</div>
+                <div style={{ color: "var(--muted)", fontSize: "0.9rem" }}>{calc.description}</div>
+              </Link>
+            ))}
+            {query && filteredCalcs.length === 0 && (
+              <div style={{ color: "var(--muted)", padding: "1rem 0" }}>No results found.</div>
+            )}
+            {!query && (
+              <div style={{ color: "var(--muted)", padding: "1rem 0" }}>Type to start searching...</div>
+            )}
+          </div>
+
+          <div style={{ display: "flex", gap: "0.5rem" }}>
+            <input
+              ref={searchInputRef}
+              type="search"
+              value={query}
+              onChange={(event) => setQuery(event.target.value)}
+              placeholder="Search (e.g. sip, bmi, gst)"
+              autoComplete="off"
+              enterKeyHint="search"
+              style={{
+                flex: "1 1 auto",
+                minWidth: 0,
+                border: "1px solid var(--border)",
+                borderRadius: 6,
+                background: "var(--surface)",
+                color: "var(--fg)",
+                padding: "0.75rem 1rem",
+                fontSize: "1rem",
+              }}
+            />
+          </div>
+        </div>
+      </div>
+
+      {/* Desktop Search */}
       <section
+        className="desktop-search"
         style={{
           marginBottom: "2.5rem",
           border: "1px solid var(--border)",
@@ -420,7 +585,6 @@ export default function HomeCalculatorDirectory({ calculators }: Props) {
                 style={{
                   display: "grid",
                   gap: "1px",
-                  gridTemplateColumns: "1fr",
                   background: "var(--border)",
                   border: "1px solid var(--border)",
                   borderRadius: 6,
@@ -456,9 +620,11 @@ export default function HomeCalculatorDirectory({ calculators }: Props) {
                       <div>
                         <div
                           style={{
-                            fontWeight: 600,
-                            fontSize: "0.95rem",
-                            marginBottom: "0.125rem",
+                            fontWeight: 800,
+                            fontSize: "1.25rem",
+                            color: "var(--fg)",
+                            letterSpacing: "-0.02em",
+                            marginBottom: "0.25rem",
                           }}
                         >
                           {calc.title}
@@ -466,8 +632,8 @@ export default function HomeCalculatorDirectory({ calculators }: Props) {
                         <div
                           style={{
                             color: "var(--muted)",
-                            fontSize: "0.8rem",
-                            lineHeight: 1.4,
+                            fontSize: "0.9rem",
+                            lineHeight: 1.5,
                           }}
                         >
                           {calc.description.length > 80
@@ -484,7 +650,7 @@ export default function HomeCalculatorDirectory({ calculators }: Props) {
                         }}
                         aria-hidden="true"
                       >
-                        {"->"}
+                        {""}
                       </span>
                     </Link>
                   );
