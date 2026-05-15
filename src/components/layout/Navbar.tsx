@@ -25,13 +25,17 @@ export default function Navbar() {
                     href="/"
                     prefetch={false}
                     style={{
+                        display: "flex",
+                        alignItems: "center",
+                        gap: "0.5rem",
                         color: "var(--fg)",
                         fontWeight: 800,
                         fontSize: "1.125rem",
                         letterSpacing: "-0.02em",
                     }}
                 >
-                    GoToCalc<span style={{ color: "var(--muted)" }}>.</span>
+                    <img src="/favicon-32x32.png" alt="GoToCalc Logo" width="24" height="24" style={{ borderRadius: "4px" }} />
+                    <span>GoToCalc<span style={{ color: "var(--muted)" }}>.</span></span>
                 </Link>
 
                 <div
