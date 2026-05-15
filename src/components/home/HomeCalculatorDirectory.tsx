@@ -133,7 +133,6 @@ export default function HomeCalculatorDirectory({ calculators }: Props) {
   const prefetchedPathsRef = useRef<Set<string>>(new Set());
   const [query, setQuery] = useState("");
   const [networkProfile] = useState<NetworkProfile>(getNetworkProfile);
-  const [networkProfile] = useState<NetworkProfile>(getNetworkProfile);
 
   const normalizedQuery = query.trim().toLowerCase();
 
