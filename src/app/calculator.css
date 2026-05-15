@@ -754,6 +754,12 @@
     color: var(--fg);
 }
 
+@media (max-width: 639px) {
+    .grade-result-card.answer {
+        order: -1;
+    }
+}
+
 .grade-result-card.warning {
     border-color: rgba(220, 38, 38, 0.35);
 }
