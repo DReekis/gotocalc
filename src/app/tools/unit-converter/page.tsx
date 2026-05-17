@@ -452,9 +452,9 @@ export default function UnitConverterPage({
               </p>
               <pre
                 style={{
-                  background: "var(--surface)",
-                  color: "var(--fg)",
-                  border: "1px solid var(--border)",
+                  background: "#f4f4f5",
+                  color: "#18181b",
+                  border: "1px solid #e5e5e5",
                   padding: "1rem",
                   borderRadius: "8px",
                   overflowX: "auto",

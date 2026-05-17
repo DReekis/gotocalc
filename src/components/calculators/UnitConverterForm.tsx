@@ -267,17 +267,9 @@ export default function UnitConverterForm({
   const [copyCodeStatus, setCopyCodeStatus] = useState("Copy code");
   const [copyResultStatus, setCopyResultStatus] = useState("Copy result");
 
-  useEffect(() => {
-    const category = CATEGORIES.find((c) => c.id === selectedCategoryId)!;
-    setFromUnitId(category.units[0].id);
-    setToUnitId(category.units[1].id);
-    setInputValue("");
-    setActiveInput("from");
-  }, [selectedCategoryId]);
-
   const activeCategory = CATEGORIES.find((c) => c.id === selectedCategoryId)!;
-  const fromUnit = activeCategory.units.find((u) => u.id === fromUnitId)!;
-  const toUnit = activeCategory.units.find((u) => u.id === toUnitId)!;
+  const fromUnit = activeCategory.units.find((u) => u.id === fromUnitId) || activeCategory.units[0];
+  const toUnit = activeCategory.units.find((u) => u.id === toUnitId) || activeCategory.units[1] || activeCategory.units[0];
 
   const performConversion = (val: number, fromU: Unit, toU: Unit): number => {
     if (activeCategory.id === "temperature") {
@@ -355,7 +347,13 @@ export default function UnitConverterForm({
               key={cat.id}
               type="button"
               className={`tab-btn grade-tab-btn ${selectedCategoryId === cat.id ? "active" : ""}`}
-              onClick={() => setSelectedCategoryId(cat.id)}
+              onClick={() => {
+                setSelectedCategoryId(cat.id);
+                setFromUnitId(cat.units[0].id);
+                setToUnitId(cat.units[1].id);
+                setInputValue("");
+                setActiveInput("from");
+              }}
               style={{ whiteSpace: "nowrap" }}
             >
               {cat.icon} {cat.label}
@@ -518,9 +516,9 @@ export default function UnitConverterForm({
                 </p>
                 <pre
                   style={{
-                    background: "var(--surface)",
-                    color: "var(--fg)",
-                    border: "1px solid var(--border)",
+                    background: "#f4f4f5",
+                    color: "#18181b",
+                    border: "1px solid #e5e5e5",
                     padding: "1rem",
                     borderRadius: "8px",
                     overflowX: "auto",
