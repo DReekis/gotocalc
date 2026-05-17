@@ -36,12 +36,12 @@ export default function CgpaToPercentagePage() {
       />
       <CalculatorShell
         title="CGPA to Percentage Calculator"
-        subtitle="Convert CGPA to percentage with a JSON-backed university formula database, switch between 4.0, 5.0, and 10.0 scales, and open six related grade calculators from the same tabbed interface."
+        subtitle="Convert CGPA to percentage using official university formulas for 25+ Indian universities. Supports 4.0, 5.0, and 10.0 scales. Also includes SGPA to CGPA, SGPA to percentage, percentage to CGPA, GPA calculator, marks percentage, and final grade planner."
         breadcrumbs={[
           { label: "Home", href: "/" },
           {
             label: "Education",
-            href: "/education/cgpa-to-percentage-calculator",
+            href: "/education/",
           },
           {
             label: "CGPA to Percentage",
@@ -59,11 +59,7 @@ export default function CgpaToPercentagePage() {
               scale.
             </p>
             <p>
-              Recruiters, postgraduate applications, scholarship forms, and
-              credential evaluators often ask for percentage equivalents. This
-              page keeps every calculation client-side and lets you switch
-              between university formulas, scale-based fallbacks, SGPA tools,
-              GPA tools, and final-grade planning without leaving the page.
+              Recruiters, postgraduate applications, scholarship forms, and government job applications in India often require a percentage equivalent of your CGPA. Different universities publish different conversion formulas — the UGC recommends CGPA × 9.5 as a default for 10-point scales, but institutions like Anna University, VTU, AKTU, SPPU, and Mumbai University (Engineering) each have their own officially notified rules. This calculator reads from a university formula database and applies the correct rule for your institution, keeping every calculation client-side so your data never leaves your device.
             </p>
           </>
         }
@@ -167,6 +163,87 @@ export default function CgpaToPercentagePage() {
             </section>
 
             <section>
+              <h2>What Does My CGPA Mean — Classification Guide</h2>
+              <p>Most Indian universities follow a classification system based on CGPA ranges. The table below shows the standard bands used by UGC-affiliated institutions on a 10-point scale.</p>
+              <div className="scrollable-table">
+                <table className="calc-table">
+                  <thead>
+                    <tr>
+                      <th>Classification</th>
+                      <th>CGPA range (10-pt)</th>
+                      <th>Approx. percentage</th>
+                      <th>Notes</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>Outstanding / O</td>
+                      <td>9.0 – 10.0</td>
+                      <td>&ge; 90%</td>
+                      <td>Highest distinction; equivalent to summa cum laude</td>
+                    </tr>
+                    <tr>
+                      <td>Distinction / A+</td>
+                      <td>8.5 – 8.99</td>
+                      <td>85% – 89%</td>
+                      <td>Required for many competitive fellowships</td>
+                    </tr>
+                    <tr>
+                      <td>First Class / A</td>
+                      <td>7.5 – 8.49</td>
+                      <td>75% – 84%</td>
+                      <td>Required for most PSU jobs and PG admissions</td>
+                    </tr>
+                    <tr>
+                      <td>Second Class / B+</td>
+                      <td>6.5 – 7.49</td>
+                      <td>65% – 74%</td>
+                      <td>Meets most mass-recruiter cutoffs</td>
+                    </tr>
+                    <tr>
+                      <td>Pass Class / B</td>
+                      <td>5.0 – 6.49</td>
+                      <td>50% – 64%</td>
+                      <td>Minimum passing standard</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </section>
+
+            <section>
+              <h2>CGPA Cutoffs for Campus Placements</h2>
+              <p>Most Indian companies use CGPA as an initial eligibility filter during campus placements. Percentage equivalents use the 10&times; multiplier — use the calculator above for university-specific percentages.</p>
+              <div className="scrollable-table">
+                <table className="calc-table">
+                  <thead>
+                    <tr>
+                      <th>Company</th>
+                      <th>Min CGPA (10-pt)</th>
+                      <th>Approx. percentage</th>
+                      <th>Notes</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr><td>TCS</td><td>6.0</td><td>60%</td><td>—</td></tr>
+                    <tr><td>Infosys</td><td>6.0</td><td>60%</td><td>—</td></tr>
+                    <tr><td>Wipro</td><td>6.0</td><td>60%</td><td>—</td></tr>
+                    <tr><td>Cognizant (CTS)</td><td>6.0</td><td>60%</td><td>—</td></tr>
+                    <tr><td>HCL Technologies</td><td>6.0</td><td>60%</td><td>—</td></tr>
+                    <tr><td>Capgemini</td><td>6.0</td><td>60%</td><td>—</td></tr>
+                    <tr><td>Accenture</td><td>6.5</td><td>65%</td><td>—</td></tr>
+                    <tr><td>LTIMindtree</td><td>6.5</td><td>65%</td><td>—</td></tr>
+                    <tr><td>Deloitte USI</td><td>7.0</td><td>70%</td><td>—</td></tr>
+                    <tr><td>Amazon (SDE/SDET)</td><td>7.0</td><td>70%</td><td>Varies by role</td></tr>
+                    <tr><td>Microsoft</td><td>7.5</td><td>75%</td><td>Campus hiring</td></tr>
+                    <tr><td>Goldman Sachs</td><td>7.5</td><td>75%</td><td>Engineering roles</td></tr>
+                  </tbody>
+                </table>
+              </div>
+              <p style={{ color: "var(--muted)", fontSize: "0.85rem", marginTop: "0.5rem" }}>Cutoffs change each hiring cycle. Always confirm on the company's official careers page or your placement cell notice.</p>
+            </section>
+
+            <section>
               <h2>University-Specific Notes</h2>
               <div className="grade-content-grid">
                 {universities.map((university) => (
@@ -180,7 +257,21 @@ export default function CgpaToPercentagePage() {
             </section>
           </>
         }
-        faqs={calc.faqs}
+        faqs={[
+          ...calc.faqs,
+          {
+            question: "What CGPA is required for campus placements at top Indian companies?",
+            answer: "Most mass recruiters — TCS, Infosys, Wipro, Cognizant, HCL, Capgemini — require a minimum CGPA of 6.0 on a 10-point scale (approximately 60%). Mid-tier companies like Accenture and LTIMindtree typically need 6.5 CGPA. Deloitte USI and Amazon usually require 7.0+, while Microsoft campus hiring is generally 7.5+. Always verify on the company's official careers page or your placement cell notice.",
+          },
+          {
+            question: "What CGPA is considered first class in India?",
+            answer: "On a 10-point CGPA scale, most Indian universities classify 7.5 CGPA and above as First Class (approximately 75% equivalent). A CGPA of 8.5+ is generally considered Distinction, and 9.0+ is Outstanding or O-grade. The exact cutoffs differ by university — verify with your official academic regulations.",
+          },
+          {
+            question: "Can I use the CGPA percentage for job applications and government forms?",
+            answer: "Yes, but formal applications should follow the conversion method specified by the university or employer. For UGC-affiliated universities without a published formula, CGPA × 9.5 is the UGC-recommended default and is widely accepted. Use this calculator to get your working equivalent, then confirm with your academic office if the application explicitly requires a certified percentage.",
+          }
+        ]}
       >
         <CgpaForm />
       </CalculatorShell>

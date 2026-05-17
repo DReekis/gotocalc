@@ -421,6 +421,10 @@ export default function CgpaForm() {
         );
     }, [percentageError, percentageValue, selectedScale, selectedUniversity]);
 
+    const cutoffTarget = useMemo(() => {
+        return convertPercentageToCgpa(60, selectedUniversity, selectedScale);
+    }, [selectedScale, selectedUniversity]);
+
     const cgpaExampleRows = useMemo(
         () => createExampleRows(selectedUniversity, selectedScale),
         [selectedScale, selectedUniversity]
@@ -658,15 +662,6 @@ export default function CgpaForm() {
                             {renderUniversityAndScaleFields()}
                         </FieldGrid>
 
-                        <FormulaContextCard
-                            universityName={resolvedFormula.university.name}
-                            scaleName={resolvedFormula.scale.name}
-                            formula={resolvedFormula.formulaDisplay}
-                            explanation={resolvedFormula.explanation}
-                            note={resolvedFormula.note}
-                            usesFallback={resolvedFormula.usesScaleFallback}
-                        />
-
                         {cgpaError && <p className="grade-error">{cgpaError}</p>}
 
                         {cgpaResult && (
@@ -680,14 +675,34 @@ export default function CgpaForm() {
                                     note={cgpaResult.note}
                                     emphasis="primary"
                                 />
-                                <ExamplesTable
-                                    title="Example conversion table"
-                                    inputLabel="CGPA"
-                                    outputLabel="Percentage"
-                                    rows={cgpaExampleRows}
-                                    outputSuffix="%"
-                                />
+                                {cgpaResult.value < 60 && cutoffTarget && cutoffTarget.value !== null && (
+                                    <div className="grade-result-card warning">
+                                        <p className="grade-result-eyebrow" style={{ color: "var(--danger)" }}>Placement Cutoff Note</p>
+                                        <p className="grade-result-copy">
+                                            Most campus placements require a 60% minimum equivalent. Based on your university's formula, you will need a target CGPA of <strong>{formatNumber(cutoffTarget.value)}</strong> to clear this mark. Focus on maximizing your grades in upcoming semesters!
+                                        </p>
+                                    </div>
+                                )}
                             </>
+                        )}
+
+                        <FormulaContextCard
+                            universityName={resolvedFormula.university.name}
+                            scaleName={resolvedFormula.scale.name}
+                            formula={resolvedFormula.formulaDisplay}
+                            explanation={resolvedFormula.explanation}
+                            note={resolvedFormula.note}
+                            usesFallback={resolvedFormula.usesScaleFallback}
+                        />
+
+                        {cgpaResult && (
+                            <ExamplesTable
+                                title="Example conversion table"
+                                inputLabel="CGPA"
+                                outputLabel="Percentage"
+                                rows={cgpaExampleRows}
+                                outputSuffix="%"
+                            />
                         )}
                     </div>
                 );
@@ -767,15 +782,6 @@ export default function CgpaForm() {
                             {renderUniversityAndScaleFields()}
                         </FieldGrid>
 
-                        <FormulaContextCard
-                            universityName={resolvedFormula.university.name}
-                            scaleName={resolvedFormula.scale.name}
-                            formula={resolvedFormula.formulaDisplay}
-                            explanation={resolvedFormula.explanation}
-                            note={resolvedFormula.note}
-                            usesFallback={resolvedFormula.usesScaleFallback}
-                        />
-
                         {sgpaError && <p className="grade-error">{sgpaError}</p>}
 
                         {sgpaPercentageResult && (
@@ -789,14 +795,26 @@ export default function CgpaForm() {
                                     note={sgpaPercentageResult.note}
                                     emphasis="primary"
                                 />
-                                <ExamplesTable
-                                    title="Example SGPA conversions"
-                                    inputLabel="SGPA"
-                                    outputLabel="Percentage"
-                                    rows={cgpaExampleRows}
-                                    outputSuffix="%"
-                                />
                             </>
+                        )}
+
+                        <FormulaContextCard
+                            universityName={resolvedFormula.university.name}
+                            scaleName={resolvedFormula.scale.name}
+                            formula={resolvedFormula.formulaDisplay}
+                            explanation={resolvedFormula.explanation}
+                            note={resolvedFormula.note}
+                            usesFallback={resolvedFormula.usesScaleFallback}
+                        />
+
+                        {sgpaPercentageResult && (
+                            <ExamplesTable
+                                title="Example SGPA conversions"
+                                inputLabel="SGPA"
+                                outputLabel="Percentage"
+                                rows={cgpaExampleRows}
+                                outputSuffix="%"
+                            />
                         )}
                     </div>
                 );
@@ -829,15 +847,6 @@ export default function CgpaForm() {
                             {renderUniversityAndScaleFields()}
                         </FieldGrid>
 
-                        <FormulaContextCard
-                            universityName={resolvedFormula.university.name}
-                            scaleName={resolvedFormula.scale.name}
-                            formula={resolvedFormula.formulaDisplay}
-                            explanation={resolvedFormula.explanation}
-                            note={resolvedFormula.note}
-                            usesFallback={resolvedFormula.usesScaleFallback}
-                        />
-
                         {percentageError && (
                             <p className="grade-error">{percentageError}</p>
                         )}
@@ -868,14 +877,27 @@ export default function CgpaForm() {
                                     note={percentageToCgpaResult.note}
                                     emphasis="primary"
                                 />
-                                <ExamplesTable
-                                    title="Example reverse conversions"
-                                    inputLabel="Percentage"
-                                    outputLabel="CGPA"
-                                    rows={percentageExampleRows}
-                                    inputSuffix="%"
-                                />
                             </>
+                        )}
+
+                        <FormulaContextCard
+                            universityName={resolvedFormula.university.name}
+                            scaleName={resolvedFormula.scale.name}
+                            formula={resolvedFormula.formulaDisplay}
+                            explanation={resolvedFormula.explanation}
+                            note={resolvedFormula.note}
+                            usesFallback={resolvedFormula.usesScaleFallback}
+                        />
+
+                        {percentageToCgpaResult &&
+                            percentageToCgpaResult.value !== null && (
+                            <ExamplesTable
+                                title="Example reverse conversions"
+                                inputLabel="Percentage"
+                                outputLabel="CGPA"
+                                rows={percentageExampleRows}
+                                inputSuffix="%"
+                            />
                         )}
                     </div>
                 );
