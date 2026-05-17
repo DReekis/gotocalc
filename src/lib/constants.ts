@@ -313,6 +313,64 @@ export const CALCULATORS: CalculatorMeta[] = [
       },
     ],
   },
+  {
+    slug: "tools/unit-converter",
+    title: "Unit Converter",
+    description: "Free online unit converter supporting length, weight, temperature, area, volume, speed, pressure, time, energy, and digital storage — 200+ unit pairs.",
+    category: "math",
+    categoryLabel: "Math",
+    applicationCategory: "UtilitiesApplication",
+    faqs: [
+      {
+        question: "How do I convert kg to lbs?",
+        answer: "Multiply the kilogram value by 2.20462. For example, 70 kg × 2.20462 = 154.32 lbs. To convert in reverse (lbs to kg), divide by 2.20462 or multiply by 0.453592."
+      },
+      {
+        question: "How do I convert Celsius to Fahrenheit?",
+        answer: "Use the formula °F = (°C × 9/5) + 32. For example, 25°C = (25 × 1.8) + 32 = 77°F. The freezing point of water is 0°C = 32°F; normal body temperature is 37°C = 98.6°F."
+      },
+      {
+        question: "How do I convert km to miles?",
+        answer: "Multiply kilometres by 0.621371. For example, 10 km × 0.621371 = 6.21 miles. To convert miles to km, multiply by 1.60934."
+      },
+      {
+        question: "How do I convert cm to inches?",
+        answer: "Divide centimetres by 2.54. For example, 30 cm ÷ 2.54 = 11.81 inches. Alternatively, multiply by 0.3937. To convert inches to cm, multiply by 2.54."
+      },
+      {
+        question: "What is the difference between metric and imperial units?",
+        answer: "The metric system (SI) uses base-10 units — metres, kilograms, litres, Celsius — and is the official standard in most of the world. The imperial system uses feet, pounds, gallons, and Fahrenheit and is still primary in the United States and partly in the UK. Converting between them requires fixed mathematical factors."
+      },
+      {
+        question: "How do I convert Fahrenheit to Celsius?",
+        answer: "Use the formula °C = (°F − 32) × 5/9. For example, 98.6°F = (98.6 − 32) × 5/9 = 37°C."
+      },
+      {
+        question: "How many KB in a MB, and MB in a GB?",
+        answer: "1 megabyte (MB) = 1,024 kilobytes (KB). 1 gigabyte (GB) = 1,024 MB = 1,048,576 KB. Storage manufacturers sometimes use 1,000-based (SI) prefixes, which is why a \"500 GB\" drive may show as 465 GB in your OS."
+      },
+      {
+        question: "How do I convert mph to km/h?",
+        answer: "Multiply mph by 1.60934. For example, 60 mph × 1.60934 = 96.56 km/h. To convert km/h to mph, multiply by 0.621371."
+      },
+      {
+        question: "How do I convert litres to gallons?",
+        answer: "For US gallons, multiply litres by 0.264172 (1 litre = 0.264172 US gallons). For UK (imperial) gallons, multiply by 0.219969 (1 litre = 0.219969 UK gallons). To convert gallons to litres (US), multiply by 3.78541."
+      },
+      {
+        question: "How do I convert square feet to square metres?",
+        answer: "Multiply sq ft by 0.092903. For example, 500 sq ft × 0.092903 = 46.45 m². To convert m² to sq ft, multiply by 10.7639."
+      },
+      {
+        question: "How do I convert ml to fl oz?",
+        answer: "Divide ml by 29.5735 (US fluid ounce). For example, 250 ml ÷ 29.5735 = 8.45 fl oz. To convert fl oz to ml, multiply by 29.5735."
+      },
+      {
+        question: "Can I embed this unit converter on my website?",
+        answer: "Yes, free of charge. Use the embed panel inside the converter to copy the iframe code. You can specify which category to show by default using the category= parameter in the URL. No API key or registration needed. The embed includes a small \"Powered by GoToCalc\" attribution link."
+      }
+    ]
+  },
 ];
 
 export function getCalculatorBySlug(slug: string): CalculatorMeta | undefined {
